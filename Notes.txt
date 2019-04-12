@@ -1,0 +1,26 @@
+Notes:
+    Helper class contains all methods bot needs to interact with server
+    Certain parts of server needs to call methods from DiscordBot, those are below
+
+1. Linking in-game accounts
+    To begin linking in-game accounts, user needs to do command .link within certain discord channel
+    User will be PMed instructions, with a random string
+    User does command ::verify (random_string) on server
+    Server calls boolean Links.linkDiscordAccount(username, random_string)
+    Boolean returns true if account gets linked, false otherwise
+
+    Once account is linked, bot will use getRole command in helper
+    This needs to return the id of the role to give to user
+    (For donator statuses, mod ranks, etc)
+
+    TODO: methods to access linked accounts
+    TODO: way to view and retrieve role ids (just a command that pms owner prob)
+
+2. Linking in-game friends chat
+    An admin must do this, as a channel in the discord must be added as well
+    Once added, go to that channel and do the command .link-chat (friends_chat)
+    (friends_chat) being the username of the owner
+
+    A method is set up in Helper for when a user types in a linked discord channel
+    This method should then send the message to the friends chat, if it exists
+    

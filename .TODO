@@ -1,0 +1,41 @@
+General:
+    ✔ Create overall bot using JDA @done(19-04-11 20:37)
+    ✔ Ensure bot is usable by all revisions using a 'Helper' class @done(19-04-11 20:37)
+    ✔ Allow changing of status @done(19-04-11 20:37)
+    ✔ Create command manager @done(19-04-11 20:37)
+
+Integration:
+    ✔ Allow linking of in-game and discord accounts @done(19-04-11 20:37)
+    ✔ Change commands to use in-game rights to check permissions @done(19-04-11 20:37)
+    ✔ Allow linking of in-game friends chats and discord channels @done(19-04-11 20:37)
+
+Games:
+    ☐ Create games that will run on random within discord channel
+    ☐ Games will give points to the winner to be used in-game
+    Impl:
+        ☐ Guess that item
+            ☐ Sends picture of random item (must be tradeable, no (#) items)
+            ☐ User uses .guess to guess a name
+            ☐ Gives 2 points to correct answer (name must be exact)
+        ☐ Find that place
+            ☐ Picks screenshot from list of screenshots
+            ☐ Player must go in-game and stand within 15² tiles and type ::find or something
+            ☐ Create dialogue to add areas
+            ☐ Gives 4 points to first person, 3 to second, 2 to third
+            ☐ Ends game after 3 people, or if no one finds within 5 minutes
+        ☐ Multiple choice trivia
+            ☐ Game has list of questions
+            ☐ Each question has 4 different answers (1 is correct)
+            ☐ User uses .guess # to guess a certain answer.
+            ☐ Figure out how to make .guess not conflict with 'guess that item'
+
+Roles:
+    ☐ Allow certain roles to be given on donation/account link/promotion
+    ☐ Allow certain roles to be given on certain # of points achieved
+    ☐ Give certain roles to the current points leader
+
+Dialogue System:
+    ✔ Create dialogue system similar to Matrix's @done(19-04-11 20:38)
+    ☐ Create setup dialogue for the bot
+
+Settings:
