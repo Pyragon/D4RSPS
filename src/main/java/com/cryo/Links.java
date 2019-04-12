@@ -2,6 +2,7 @@ package com.cryo;
 
 import com.cryo.db.impl.AccountConnection;
 import com.cryo.db.impl.FriendsChatConnection;
+import com.cryo.db.impl.MiscConnection;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.requests.RestAction;
 
@@ -12,6 +13,23 @@ public class Links {
     public static void sendWorldNews(String news) {
         ArrayList<Long> channelIds = DiscordBot.getInstance().getWorldNewsChannels();
         channelIds.forEach(id -> DiscordBot.getInstance().getJda().getTextChannelById(id).sendMessage("[World News]" + news).queue());
+    }
+
+    public static void recheckRoles(String username) {
+        Object[] data = AccountConnection.connection().handleRequest("get-discord-id", username);
+        if (data == null) return;
+        long discordId = (long) data[0];
+        long[] roleIds = DiscordBot.getInstance().getHelper().getRoles(username);
+        User user = DiscordBot.getInstance().getJda().getUserById(discordId);
+        long guildId = MiscConnection.getLong("guild-id");
+        if (guildId == 0) return;
+        Member member = DiscordBot.getInstance().getJda().getGuildById(guildId).getMember(user);
+        for (long roleId : roleIds) {
+            Role role = DiscordBot.getInstance().getJda().getGuildById(guildId).getRoleById(roleId);
+            if (role == null) continue;
+            if (member.getRoles().contains(role)) continue;
+            DiscordBot.getInstance().getJda().getGuildById(guildId).getController().addRolesToMember(member, role);
+        }
     }
 
     public static Object linkFriendsChat(String owner, long discordId) {
@@ -28,16 +46,7 @@ public class Links {
         Object[] data = AccountConnection.connection().handleRequest("verify", username, randomString);
         boolean linked = data != null;
         if (!linked) return false;
-        long discordId = (long) data[0];
-        long roleId = DiscordBot.getInstance().getHelper().getRole(username);
-        if (roleId != 0L) {
-            long guildId = DiscordBot.getInstance().getHelper().getGuildId();
-            Role role = DiscordBot.getInstance().getJda().getGuildById(guildId).getRoleById(roleId);
-            if (role == null) return true;
-            User user = DiscordBot.getInstance().getJda().getUserById(discordId);
-            Member member = DiscordBot.getInstance().getJda().getGuildById(guildId).getMember(user);
-            DiscordBot.getInstance().getJda().getGuildById(guildId).getController().addRolesToMember(member, role);
-        }
+        recheckRoles(username);
         return true;
     }
 

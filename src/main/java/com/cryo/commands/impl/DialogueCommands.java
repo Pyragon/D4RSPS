@@ -20,7 +20,10 @@ public class DialogueCommands implements Command {
     public void handleCommand(Message message, String command, String[] cmd) {
         switch (cmd[0]) {
             case "setup":
-                DiscordBot.getInstance().getDialogueManager().startConversation(message.getAuthor().getIdLong(), "setup");
+                message.delete().queue();
+                DiscordBot.getInstance()
+                        .getDialogueManager()
+                        .startConversation(message.getAuthor().getIdLong(), "setup");
                 break;
         }
     }

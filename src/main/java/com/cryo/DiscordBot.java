@@ -109,7 +109,7 @@ public class DiscordBot {
             }
 
             @Override
-            public long getRole(String username) {
+            public long getRoles(String username) {
                 return 0;
             }
 

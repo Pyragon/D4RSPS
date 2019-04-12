@@ -25,7 +25,7 @@ public class SetupDialogue extends Dialogue {
 
     @Override
     public void run(String response, String[] res) {
-        if (response.equals("end")) {
+        if (response != null && response.equalsIgnoreCase("end")) {
             end();
             return;
         }
@@ -78,7 +78,7 @@ public class SetupDialogue extends Dialogue {
     }
 
     public boolean parseNext(String response) {
-        if (!response.equals("next")) return false;
+        if (!response.equalsIgnoreCase("next")) return false;
         stage++;
         run();
         return true;

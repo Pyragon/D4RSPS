@@ -9,7 +9,7 @@ Notes:
     Server calls boolean Links.linkDiscordAccount(username, random_string)
     Boolean returns true if account gets linked, false otherwise
 
-    Once account is linked, bot will use getRole command in helper
+    Once account is linked, bot will use getRoles command in helper
     This needs to return the id of the role to give to user
     (For donator statuses, mod ranks, etc)
 

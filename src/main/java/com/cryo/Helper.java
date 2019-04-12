@@ -8,7 +8,7 @@ public interface Helper {
 
     void sendFriendsChatMessage(String owner, String username, String message);
 
-    long getRole(String username);
+    long[] getRoles(String username);
 
     long getOwnerId();
 
