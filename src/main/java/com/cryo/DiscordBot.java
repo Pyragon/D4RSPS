@@ -4,6 +4,7 @@ import com.cryo.commands.CommandManager;
 import com.cryo.db.DBConnectionManager;
 import com.cryo.db.impl.MiscConnection;
 import com.cryo.dialogue.DialogueManager;
+import com.cryo.games.GameManager;
 import com.cryo.tasks.TaskManager;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -26,6 +27,7 @@ public class DiscordBot {
     private CommandManager commandManager;
     private DBConnectionManager connectionManager;
     private DialogueManager dialogueManager;
+    private GameManager gameManager;
     private TaskManager taskManager;
     private Gson gson;
     private Properties properties;
@@ -49,6 +51,8 @@ public class DiscordBot {
         taskManager.start();
         dialogueManager = new DialogueManager();
         dialogueManager.load();
+        gameManager = new GameManager();
+        gameManager.load();
         loadNewsChannels();
         try {
             jda = new JDABuilder(AccountType.BOT)
@@ -109,8 +113,8 @@ public class DiscordBot {
             }
 
             @Override
-            public long getRoles(String username) {
-                return 0;
+            public long[] getRoles(String username) {
+                return new long[]{};
             }
 
             @Override

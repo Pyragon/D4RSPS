@@ -32,6 +32,10 @@ public class MiscConnection extends DatabaseConnection {
         return null;
     }
 
+    public static void setLong(String key, long value) {
+        connection().handleRequest("set-value", key, Long.toString(value));
+    }
+
     public static long getLong(String key) {
         Object[] data = connection().handleRequest("get-value", key);
         if (data == null) return 0L;
@@ -47,4 +51,6 @@ public class MiscConnection extends DatabaseConnection {
         if (empty(set)) return null;
         return new Object[]{Integer.parseInt(getString(set, "value"))};
     };
+
+
 }

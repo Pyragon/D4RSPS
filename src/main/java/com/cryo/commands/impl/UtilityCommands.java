@@ -2,6 +2,7 @@ package com.cryo.commands.impl;
 
 import com.cryo.DiscordBot;
 import com.cryo.entities.Command;
+import com.cryo.entities.Game;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -19,7 +20,7 @@ public class UtilityCommands implements Command {
 
     @Override
     public String[] getAliases() {
-        return new String[]{"purge", "list-roles", "guild-id", "my-id", "channel-id", "add-news-channel", "remove-news-channel"};
+        return new String[]{"purge", "list-roles", "guild-id", "my-id", "channel-id", "add-news-channel", "remove-news-channel", "guess", "default"};
     }
 
     @Override
@@ -50,6 +51,15 @@ public class UtilityCommands implements Command {
                     }
                     channel.getHistory().retrievePast(length).queue(l -> l.forEach(m -> m.delete().queue()));
                 }
+                break;
+            case "guess":
+                Game game = DiscordBot.getInstance().getGameManager().getCurrentGame();
+                if (game == null) break;
+                game.processGuessCommand(message, command, cmd);
+                break;
+            case "default":
+                game = DiscordBot.getInstance().getGameManager().getGames().get("Guess That Item");
+                DiscordBot.getInstance().getGameManager().startNewGame(game);
                 break;
             case "my-id":
                 message.getChannel().sendMessage("Your Discord ID: " + message.getAuthor().getIdLong()).queue();

@@ -1,5 +1,7 @@
 package com.cryo.utils;
 
+import org.apache.commons.validator.routines.UrlValidator;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -21,11 +23,27 @@ public class Utilities {
 
     private static Random RANDOM = new Random();
 
+    private static String[] SCHEMES = {"http", "https"};
+
+    private static UrlValidator validator;
+
+    static {
+        validator = new UrlValidator(SCHEMES);
+    }
+
     public static int getSkill(String name) {
         for (int i = 0; i < SKILL_NAME.length; i++) {
             if (SKILL_NAME[i].equalsIgnoreCase(name)) return i;
         }
         return -1;
+    }
+
+    public static String getItemPicture(String itemName) {
+        return null;
+    }
+
+    public static boolean isValidURL(String url) {
+        return validator.isValid(url);
     }
 
     public static final int random(int maxValue) {

@@ -2,6 +2,7 @@ package com.cryo.db;
 
 import com.cryo.db.impl.AccountConnection;
 import com.cryo.db.impl.FriendsChatConnection;
+import com.cryo.db.impl.GamesConnection;
 import com.cryo.db.impl.MiscConnection;
 
 import java.util.HashMap;
@@ -37,10 +38,11 @@ public class DBConnectionManager {
         connections.put(Connection.LINKED_ACCOUNTS, new AccountConnection());
         connections.put(Connection.FRIENDS_CHAT, new FriendsChatConnection());
         connections.put(Connection.MISC, new MiscConnection());
+        connections.put(Connection.GAMES, new GamesConnection());
     }
 
     public enum Connection {
-        LINKED_ACCOUNTS, FRIENDS_CHAT, MISC
+        LINKED_ACCOUNTS, FRIENDS_CHAT, MISC, GAMES
     }
 
 }
