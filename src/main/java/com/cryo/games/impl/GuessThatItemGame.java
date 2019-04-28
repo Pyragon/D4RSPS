@@ -17,6 +17,8 @@ public class GuessThatItemGame extends Game {
     public static ArrayList<Item> items;
     private Item currentItem;
 
+    private long messageId;
+
     static {
         items = getGuessItems();
     }
@@ -36,7 +38,21 @@ public class GuessThatItemGame extends Game {
             if (data != null)
                 points = (int) data[0];
             sendMessage("Correct " + message.getAuthor().getAsMention() + "! You have been awarded 2 points! You now have " + points + " points.");
+            end(message.getAuthor().getName());
+            DiscordBot.getInstance().getGameManager().endGame();
         } else sendMessage("Incorrect " + message.getAuthor().getAsMention() + "! Please try again.");
+    }
+
+    @Override
+    public void end(String... params) {
+        if (messageId != 0L) {
+            long channelId = MiscConnection.getLong("guess-that-item-channel");
+            long guildId = MiscConnection.getLong("guild-id");
+            Message message = DiscordBot.getInstance().getJda().getGuildById(guildId).getTextChannelById(channelId).getMessageById(messageId).complete();
+            if (message == null) return;
+            String winner = params.length > 0 ? params[0] : null;
+            message.editMessage(buildWinningMessage(currentItem, winner));
+        }
     }
 
     @Override
@@ -55,10 +71,28 @@ public class GuessThatItemGame extends Game {
         return 2;
     }
 
-    public void sendMessage(String message) {
+    public long sendMessage(String text) {
         long channelId = MiscConnection.getLong("guess-that-item-channel");
-        if (channelId == 0L) return;
-        DiscordBot.getInstance().getJda().getTextChannelById(channelId).sendMessage(message).queue();
+        if (channelId == 0L) return 0L;
+        Message message = DiscordBot.getInstance().getJda().getTextChannelById(channelId).sendMessage(text).complete();
+        if (message == null) return 0L;
+        return message.getIdLong();
+    }
+
+    public static MessageEmbed buildWinningMessage(Item item, String winner) {
+        try {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.setTitle("Guess that Item! - WON");
+            builder.setDescription("Use .guess (item name) to guess the item in the thumbnail and try to win some internet points!");
+            builder.setThumbnail(item.getItemPicUrl());
+            builder.addField("Game Over!", winner == null ? "Game ended. No one answered correctly in time." : "Correct item was guessed by: " + winner, false);
+            if (winner != null)
+                builder.addField("Correct Answer", "Correct answer was: " + item.getItemName(), false);
+            return builder.build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static MessageEmbed buildEmbedMessage(Item item) {

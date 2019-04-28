@@ -3,6 +3,7 @@ General:
     ✔ Ensure bot is usable by all revisions using a 'Helper' class @done(19-04-11 20:37)
     ✔ Allow changing of status @done(19-04-11 20:37)
     ✔ Create command manager @done(19-04-11 20:37)
+    ☐ Move admin commands from UtilityCommands to DeveloperCommands
 
 Integration:
     ✔ Allow linking of in-game and discord accounts @done(19-04-11 20:37)
@@ -30,12 +31,16 @@ Games:
             ☐ Figure out how to make .guess not conflict with 'guess that item'
 
 Roles:
-    ☐ Allow certain roles to be given on donation/account link/promotion
-    ☐ Allow certain roles to be given on certain # of points achieved
+    ✔ Allow certain roles to be given on donation/account link/promotion @done(19-04-22 01:34)
+    ✔ Allow certain roles to be given on certain # of points achieved @done(19-04-22 18:11)
     ☐ Give certain roles to the current points leader
+    ☐ Deleting role through Discord should delete role from database as well
 
 Dialogue System:
     ✔ Create dialogue system similar to Matrix's @done(19-04-11 20:38)
-    ☐ Create setup dialogue for the bot
+    ✔ Create setup dialogue for the bot @done(19-04-22 01:35)
 
 Settings:
+    ☐ Change 'guild-id' to be obtained through Helper class rather than setup dialogue
+    ☐ Change owner id to be obtained through Helper class
+    ☐ Ensure all calls for above are changed and working properly

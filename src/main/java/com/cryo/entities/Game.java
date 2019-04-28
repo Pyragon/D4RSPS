@@ -12,7 +12,7 @@ public abstract class Game {
 
     }
 
-    public void win(long id) {
+    public void end(String... params) {
 
     }
 

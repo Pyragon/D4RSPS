@@ -1,8 +1,7 @@
 package com.cryo;
 
-import com.cryo.db.impl.MiscConnection;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
 public class EventListener {
@@ -22,18 +21,8 @@ public class EventListener {
         }
     }
 
-    public void onGuildJoin(GuildJoinEvent event) {
-        Object[] data = MiscConnection.connection().handleRequest("get-guild-id");
-        if (data != null) {
-            long ownerId = DiscordBot.getInstance().getHelper().getOwnerId();
-            DiscordBot.getInstance().getJda().getUserById(ownerId).openPrivateChannel().queue(privateChannel -> {
-                privateChannel.sendMessage("I sensed that I have been added to a second guild improperly").queue();
-                privateChannel.sendMessage("Please remove me from the guild I was just added to, and follow instructions on the rune-server page on how to switch guildes.").queue();
-            });
-            return;
-        }
-        long id = event.getGuild().getIdLong();
-        MiscConnection.connection().handleRequest("set-guild-id", id);
-        System.out.println("Joined server: " + id);
+    @SubscribeEvent
+    public void onRoleDeleted(RoleDeleteEvent event) {
+        DiscordBot.getInstance().getRoleManager().roleDeleted(event.getRole().getIdLong());
     }
 }

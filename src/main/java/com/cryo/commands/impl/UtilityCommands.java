@@ -1,10 +1,10 @@
 package com.cryo.commands.impl;
 
 import com.cryo.DiscordBot;
+import com.cryo.Links;
 import com.cryo.entities.Command;
 import com.cryo.entities.Game;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.time.OffsetDateTime;
@@ -20,7 +20,7 @@ public class UtilityCommands implements Command {
 
     @Override
     public String[] getAliases() {
-        return new String[]{"purge", "list-roles", "guild-id", "my-id", "channel-id", "add-news-channel", "remove-news-channel", "guess", "default"};
+        return new String[]{"purge", "recheck-roles", "list-roles", "guild-id", "my-id", "channel-id", "add-news-channel", "remove-news-channel", "guess", "default"};
     }
 
     @Override
@@ -58,8 +58,10 @@ public class UtilityCommands implements Command {
                 game.processGuessCommand(message, command, cmd);
                 break;
             case "default":
-                game = DiscordBot.getInstance().getGameManager().getGames().get("Guess That Item");
-                DiscordBot.getInstance().getGameManager().startNewGame(game);
+                String random = command.substring(8);
+                boolean linked = Links.linkDiscordAccount("cody", random);
+                message.getChannel().sendMessage("Linked: " + linked).queue();
+                message.delete().queue();
                 break;
             case "my-id":
                 message.getChannel().sendMessage("Your Discord ID: " + message.getAuthor().getIdLong()).queue();
@@ -78,14 +80,14 @@ public class UtilityCommands implements Command {
                 channelId = message.getChannel().getIdLong();
                 DiscordBot.getInstance().removeNewsChannel(channelId);
                 break;
+            case "recheck-roles":
+                message.delete().queue();
+                message.getChannel().sendMessage("Rechecking all roles...").queue();
+                DiscordBot.getInstance().getRoleManager().recheckAllRoles();
+                break;
             case "list-roles":
-                long guildId = DiscordBot.getInstance().getHelper().getGuildId();
-                List<Role> roles = DiscordBot.getInstance().getJda().getGuildById(guildId).getRoles();
-                StringBuilder builder = new StringBuilder();
-//                builder.append("```");
-                roles.forEach(role -> builder.append(role.getAsMention() + " - " + role.getIdLong() + "\n\r"));
-//                builder.append("```");
-                message.getChannel().sendMessage(builder.toString()).queue();
+                message.delete().queue();
+                message.getChannel().sendMessage(DiscordBot.getInstance().getRoleManager().getRolesEmbed()).queue();
                 break;
         }
     }

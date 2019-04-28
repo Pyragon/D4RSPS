@@ -1,9 +1,6 @@
 package com.cryo.db;
 
-import com.cryo.db.impl.AccountConnection;
-import com.cryo.db.impl.FriendsChatConnection;
-import com.cryo.db.impl.GamesConnection;
-import com.cryo.db.impl.MiscConnection;
+import com.cryo.db.impl.*;
 
 import java.util.HashMap;
 
@@ -39,10 +36,11 @@ public class DBConnectionManager {
         connections.put(Connection.FRIENDS_CHAT, new FriendsChatConnection());
         connections.put(Connection.MISC, new MiscConnection());
         connections.put(Connection.GAMES, new GamesConnection());
+        connections.put(Connection.ROLES, new RolesConnection());
     }
 
     public enum Connection {
-        LINKED_ACCOUNTS, FRIENDS_CHAT, MISC, GAMES
+        LINKED_ACCOUNTS, FRIENDS_CHAT, MISC, GAMES, ROLES
     }
 
 }

@@ -19,6 +19,8 @@ public class GameManager {
 
     private Game currentGame;
 
+    private long startTime = 0L;
+
     public void load() {
         try {
             games = new HashMap<>();
@@ -40,20 +42,33 @@ public class GameManager {
         }
     }
 
+    public void checkLength() {
+        if (startTime == 0L || currentGame == null) return;
+        long elapsed = System.currentTimeMillis() - startTime;
+        if (elapsed >= (1000 * 60 * 5) && currentGame != null) {
+            currentGame.end();
+            currentGame = null;
+        }
+    }
+
     public void startNewGame() {
-        if (Utilities.random(5) != 1) return;
+        if (currentGame != null || Utilities.random(300) != 1) return;
         List<Game> games = new ArrayList<>(this.games.values());
         Collections.shuffle(games);
         Game game = games.get(0);
-        if (game.startGame())
+        if (game.startGame()) {
             currentGame = game;
+            startTime = System.currentTimeMillis();
+        }
     }
 
     public void startNewGame(Game game) {
         if (currentGame != null)
-            currentGame.win(0L);
-        if (game.startGame())
+            currentGame.end();
+        if (game.startGame()) {
             currentGame = game;
+            startTime = System.currentTimeMillis();
+        }
     }
 
     public void endGame() {

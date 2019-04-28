@@ -24,6 +24,10 @@ public class GamesConnection extends DatabaseConnection {
     public Object[] handleRequest(Object... data) {
         String opcode = (String) data[0];
         switch (opcode) {
+            case "add-total-points":
+                set("points", "total_points=total_points+?", "discord_id=?", data[1], data[2]);
+            case "get-points-leader":
+                return select("points", null, "ORDER BY points DESC LIMIT 1", GET_POINTS);
             case "get-points":
                 return select("points", "discord_id=?", GET_POINTS, data[1]);
             case "add-points":
@@ -32,9 +36,18 @@ public class GamesConnection extends DatabaseConnection {
             case "remove-points":
                 set("points", "points=points-?", "discord_id=?", data[1], data[2]);
                 break;
-            case "set-points":
+            case "set-total-points":
                 long id = (long) data[1];
                 int points = (int) data[2];
+                data = handleRequest("get-points", id);
+                if (data == null)
+                    insert("points", "DEFAULT", id, points, points);
+                else
+                    set("points", "total_points=?", "discord_id=?", points, id);
+                break;
+            case "set-points":
+                id = (long) data[1];
+                points = (int) data[2];
                 data = handleRequest("get-points", id);
                 if (data == null)
                     insert("points", "DEFAULT", id, points);
@@ -50,12 +63,31 @@ public class GamesConnection extends DatabaseConnection {
         return null;
     }
 
+    public static int getTotalPoints(long id) {
+        Object[] data = connection().handleRequest("get-points", id);
+        if (data == null) return 0;
+        return (int) data[2];
+    }
+
+    public static int getPoints(long id) {
+        Object[] data = connection().handleRequest("get-points", id);
+        if (data == null) return 0;
+        return (int) data[0];
+    }
+
+    public static void setPoints(long id, int points, boolean total) {
+        connection().handleRequest("set-" + (total ? "total-" : "") + "points", id, points);
+        DiscordBot.getInstance().getRoleManager().recheckRoles(id);
+    }
+
     public static void addPoints(long id, int points) {
         Object[] data = connection().handleRequest("get-points", id);
         if (data == null)
             connection().handleRequest("set-points", id, points);
         else
             connection().handleRequest("add-points", points, id);
+        connection().handleRequest("add-total-points", points, id);
+        DiscordBot.getInstance().getRoleManager().recheckRoles(id);
     }
 
     public static void removePoints(long id, int points) {
@@ -64,12 +96,15 @@ public class GamesConnection extends DatabaseConnection {
             connection().handleRequest("set-points", id, -points);
         else
             connection().handleRequest("remove-points", points, id);
+        DiscordBot.getInstance().getRoleManager().recheckRoles(id);
     }
 
     private final SQLQuery GET_POINTS = set -> {
         if (empty(set)) return null;
+        long discordId = getLongInt(set, "discord_id");
         int points = getInt(set, "points");
-        return new Object[]{points};
+        int totalPoints = getInt(set, "total_points");
+        return new Object[]{points, discordId, totalPoints};
     };
 
     private final SQLQuery GET_GUESS_ITEMS = set -> {

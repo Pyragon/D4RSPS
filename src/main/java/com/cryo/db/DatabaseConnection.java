@@ -128,6 +128,7 @@ public abstract class DatabaseConnection {
                 else if (obj instanceof Long) stmt.setLong(index, (long) obj);
                 else if (obj instanceof Timestamp) stmt.setTimestamp(index, (Timestamp) obj);
                 else if (obj instanceof Time) stmt.setTime(index, (Time) obj);
+                else if (obj instanceof Boolean) stmt.setBoolean(index, (Boolean) obj);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -280,7 +281,7 @@ public abstract class DatabaseConnection {
             String query = "INSERT INTO `" + database + "` VALUES(" + insert.toString() + ")";
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             setParams(stmt, objects);
-//            System.out.println(stmt);
+            System.out.println(stmt);
             stmt.execute();
             ResultSet set = stmt.getGeneratedKeys();
             if (set.next()) return set.getInt(1);
@@ -288,12 +289,6 @@ public abstract class DatabaseConnection {
             e.printStackTrace();
         }
         return -1;
-    }
-
-    public ResultSet selectAll(String database, String condition) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("SELECT * FROM ").append("`" + database + "`").append(" " + condition);
-        return executeQuery(builder.toString());
     }
 
     public void delete(String database, String condition, Object... values) {
@@ -404,6 +399,15 @@ public abstract class DatabaseConnection {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public boolean getBoolean(ResultSet set, String string) {
+        try {
+            return set.getBoolean(string);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public Object getObject(ResultSet set, String string) {

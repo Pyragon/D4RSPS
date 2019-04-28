@@ -8,12 +8,6 @@ public interface Helper {
 
     void sendFriendsChatMessage(String owner, String username, String message);
 
-    long[] getRoles(String username);
-
-    long getOwnerId();
-
-    long getGuildId();
-
     int getPlayersOnline();
 
     int getLevel(String username, int skill);
@@ -21,6 +15,8 @@ public interface Helper {
     double getXp(String username, int skill);
 
     String getEquip(String username, int index);
+
+    String[] getStatuses(String username);
 
     default String getStatus() {
         return ".help | " + getPlayersOnline() + " online";

@@ -1,6 +1,7 @@
 package com.cryo.commands.impl;
 
 import com.cryo.DiscordBot;
+import com.cryo.db.impl.MiscConnection;
 import com.cryo.entities.Command;
 import com.cryo.utils.Utilities;
 import com.mysql.jdbc.StringUtils;
@@ -25,7 +26,7 @@ public class InGameStatsCommands implements Command {
     public Optional<Emote> getEmoji(String name) {
         return DiscordBot.getInstance()
                 .getJda()
-                .getGuildById(DiscordBot.getInstance().getHelper().getGuildId())
+                .getGuildById(MiscConnection.getLong("guild-id"))
                 .getEmotes()
                 .stream()
                 .filter(e -> e.getName().equalsIgnoreCase(name))

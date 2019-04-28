@@ -7,6 +7,7 @@ import com.cryo.entities.SQLQuery;
 import com.cryo.utils.Utilities;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class AccountConnection extends DatabaseConnection {
@@ -45,6 +46,8 @@ public class AccountConnection extends DatabaseConnection {
             case "unlink":
                 delete("linked", "discord_id=?", data[1]);
                 break;
+            case "get-all-discord-ids":
+                return select("linked", null, GET_DISCORD_IDS);
             case "get-discord-id":
                 data = select("linked", "username=?", GET_LINKED_DATA, data[1]);
                 if (data == null) return null;
@@ -76,6 +79,13 @@ public class AccountConnection extends DatabaseConnection {
         long discordId = getLongInt(set, "discord_id");
         Timestamp expiry = getTimestamp(set, "expiry");
         return new Object[]{discordId, expiry};
+    };
+
+    private final SQLQuery GET_DISCORD_IDS = set -> {
+        ArrayList<Long> ids = new ArrayList<>();
+        if (wasNull(set)) return new Object[]{ids};
+        while (next(set)) ids.add(getLongInt(set, "discord_id"));
+        return new Object[]{ids};
     };
 
     private final SQLQuery GET_LINKED_DATA = set -> {

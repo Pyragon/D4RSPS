@@ -8,7 +8,7 @@ public class DialogueCommands implements Command {
 
     @Override
     public int getPermissionsReq(String command) {
-        return command.split(" ")[0].equals("setup") ? 2 : 0;
+        return 2;
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.cryo.db.impl.MiscConnection;
 import com.cryo.dialogue.DialogueManager;
 import com.cryo.games.GameManager;
 import com.cryo.tasks.TaskManager;
+import com.cryo.utils.RoleManager;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,6 +30,7 @@ public class DiscordBot {
     private DialogueManager dialogueManager;
     private GameManager gameManager;
     private TaskManager taskManager;
+    private RoleManager roleManager;
     private Gson gson;
     private Properties properties;
     private JDA jda;
@@ -53,6 +55,8 @@ public class DiscordBot {
         dialogueManager.load();
         gameManager = new GameManager();
         gameManager.load();
+        roleManager = new RoleManager();
+        roleManager.load();
         loadNewsChannels();
         try {
             jda = new JDABuilder(AccountType.BOT)
@@ -108,23 +112,7 @@ public class DiscordBot {
 
             @Override
             public void sendFriendsChatMessage(String owner, String username, String message) {
-                System.out.println("Message from " + username + " to " + owner + " " + message);
                 Links.handleServerMessage("cody", "Cody", "Response");
-            }
-
-            @Override
-            public long[] getRoles(String username) {
-                return new long[]{};
-            }
-
-            @Override
-            public long getOwnerId() {
-                return 170473662095425536L;
-            }
-
-            @Override
-            public long getGuildId() {
-                return 458182076290695196L;
             }
 
             @Override
@@ -145,6 +133,12 @@ public class DiscordBot {
             @Override
             public String getEquip(String username, int index) {
                 return "Nothing";
+            }
+
+            @Override
+            public String[] getStatuses(String username) {
+                if (username.equalsIgnoreCase("cody")) return new String[]{"Owner"};
+                return new String[]{};
             }
         });
         instance.load();
