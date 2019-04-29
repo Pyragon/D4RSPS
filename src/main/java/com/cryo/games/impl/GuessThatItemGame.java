@@ -47,11 +47,12 @@ public class GuessThatItemGame extends Game {
     public void end(String... params) {
         if (messageId != 0L) {
             long channelId = MiscConnection.getLong("guess-that-item-channel");
+            if (channelId == 0L) return;
             long guildId = MiscConnection.getLong("guild-id");
             Message message = DiscordBot.getInstance().getJda().getGuildById(guildId).getTextChannelById(channelId).getMessageById(messageId).complete();
             if (message == null) return;
             String winner = params.length > 0 ? params[0] : null;
-            message.editMessage(buildWinningMessage(currentItem, winner));
+            message.editMessage(buildWinningMessage(currentItem, winner)).queue();
         }
     }
 
