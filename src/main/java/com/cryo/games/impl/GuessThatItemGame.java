@@ -62,7 +62,9 @@ public class GuessThatItemGame extends Game {
         ArrayList<Item> items = (ArrayList<Item>) this.items.clone();
         Collections.shuffle(items);
         currentItem = items.get(0);
-        DiscordBot.getInstance().getJda().getTextChannelById(channelId).sendMessage(buildEmbedMessage(currentItem)).queue();
+        Message message = DiscordBot.getInstance().getJda().getTextChannelById(channelId).sendMessage(buildEmbedMessage(currentItem)).complete();
+        if (message == null) return false;
+        messageId = message.getIdLong();
         return true;
     }
 
