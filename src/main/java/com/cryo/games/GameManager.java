@@ -62,6 +62,11 @@ public class GameManager {
         }
     }
 
+    public void startNewGame(String name) {
+        if (!games.containsKey(name)) return;
+        startNewGame(games.get(name));
+    }
+
     public void startNewGame(Game game) {
         if (currentGame != null)
             currentGame.end();

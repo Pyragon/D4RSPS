@@ -7,7 +7,8 @@ import com.cryo.entities.Item;
 import com.cryo.games.impl.GuessThatItemGame;
 import com.cryo.utils.Utilities;
 import com.mysql.jdbc.StringUtils;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.PrivateChannel;
 
 public class GuessThatItemDialogue extends Dialogue {
 
@@ -35,11 +36,11 @@ public class GuessThatItemDialogue extends Dialogue {
             sendMessage("I have detected that a channel has not been set up yet. Please enter the ID of the channel you would like this game to play in. (Can be found with .channel-id command in desired channel.");
             return;
         }
-        run();
+        run(null, null);
     }
 
     @Override
-    public void run(String response, String[] res) {
+    public void run(PrivateChannel channel, Message message, String response, String[] res) {
         if (response != null && response.equalsIgnoreCase("end")) {
             sendMessage("Ending dialogue. Goodbye.");
             end();
@@ -52,14 +53,13 @@ public class GuessThatItemDialogue extends Dialogue {
                     sendMessage("Error parsing channel ID. Please try again.");
                     return;
                 }
-                TextChannel channel = DiscordBot.getInstance().getJda().getTextChannelById(channelId);
-                if (channel == null) {
+                if (DiscordBot.getInstance().getJda().getTextChannelById(channelId) == null) {
                     sendMessage("Error parsing channel ID. Please try again.");
                     return;
                 }
                 MiscConnection.setLong("guess-that-item-channel", channelId);
                 stage++;
-                run();
+                run(channel, message);
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -90,7 +90,7 @@ public class GuessThatItemDialogue extends Dialogue {
                 sendMessage("Okay. What would you like the hint to be?");
             } else if (response.equals("n") || response.equals("no")) {
                 stage = 6;
-                run();
+                run(channel, message);
                 return;
             } else {
                 sendMessage("Unable to process response. Please try again. Would you like to add a hint for this item? (yes/y or no/n)");
@@ -105,7 +105,7 @@ public class GuessThatItemDialogue extends Dialogue {
             response = response.toLowerCase();
             if (response.equals("y") || response.equals("yes")) {
                 stage = 6;
-                run();
+                run(channel, message);
                 return;
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Okay. What would you like the hint to be?");
@@ -129,7 +129,7 @@ public class GuessThatItemDialogue extends Dialogue {
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Okay. We're going to have to start over.");
                 stage = 0;
-                run();
+                run(channel, message);
                 return;
             } else {
                 sendMessage("Unable to process response. Please try again.");
@@ -140,7 +140,7 @@ public class GuessThatItemDialogue extends Dialogue {
             response = response.toLowerCase();
             if (response.equals("y") || response.equals("yes")) {
                 stage = 0;
-                run();
+                run(channel, message);
                 return;
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Goodbye.");

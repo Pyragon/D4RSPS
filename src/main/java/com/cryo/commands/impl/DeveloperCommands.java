@@ -1,5 +1,7 @@
 package com.cryo.commands.impl;
 
+import com.cryo.DiscordBot;
+import com.cryo.Links;
 import com.cryo.db.impl.GamesConnection;
 import com.cryo.entities.Command;
 import net.dv8tion.jda.core.entities.Message;
@@ -13,12 +15,21 @@ public class DeveloperCommands implements Command {
 
     @Override
     public String[] getAliases() {
-        return new String[]{"set-points", "set-total-points"};
+        return new String[]{"set-points", "set-total-points", "start-game", "default"};
     }
 
     @Override
     public void handleCommand(Message message, String command, String[] cmd) {
         switch (cmd[0].toLowerCase()) {
+            case "default":
+                String random = command.substring(8);
+                boolean linked = Links.linkDiscordAccount("cody", random);
+                message.getChannel().sendMessage("Linked: " + linked).queue();
+                message.delete().queue();
+                break;
+            case "start-game":
+                DiscordBot.getInstance().getGameManager().startNewGame(command.substring(11));
+                break;
             case "set-points":
             case "set-total-points":
                 int points;

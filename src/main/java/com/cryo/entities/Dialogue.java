@@ -2,7 +2,9 @@ package com.cryo.entities;
 
 import com.cryo.DiscordBot;
 import lombok.Data;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.PrivateChannel;
 
 @Data
 public abstract class Dialogue {
@@ -15,26 +17,32 @@ public abstract class Dialogue {
 
     public abstract void start(String[] parameters);
 
-    public abstract void run(String response, String[] res);
+    public abstract void run(PrivateChannel channel, Message message, String response, String[] res);
 
-    protected void run() {
-        run(null, null);
+    protected void run(PrivateChannel channel, Message message) {
+        run(channel, message, null, null);
     }
 
-    protected void sendMessage(String message) {
-        DiscordBot.getInstance()
+    protected long sendMessage(String message) {
+        PrivateChannel channel = DiscordBot.getInstance()
                 .getJda()
                 .getUserById(id)
                 .openPrivateChannel()
-                .queue(privateChannel -> privateChannel.sendMessage(message).queue());
+                .complete();
+        if (channel == null) return 0L;
+        Message m = channel.sendMessage(message).complete();
+        return m == null ? 0L : m.getIdLong();
     }
 
-    protected void sendMessage(MessageEmbed embed) {
-        DiscordBot.getInstance()
+    protected long sendMessage(MessageEmbed embed) {
+        PrivateChannel channel = DiscordBot.getInstance()
                 .getJda()
                 .getUserById(id)
                 .openPrivateChannel()
-                .queue(privateChannel -> privateChannel.sendMessage(embed).queue());
+                .complete();
+        if (channel == null) return 0L;
+        Message m = channel.sendMessage(embed).complete();
+        return m == null ? 0L : m.getIdLong();
     }
 
     public void end() {

@@ -13,24 +13,14 @@ public class DialogueCommands implements Command {
 
     @Override
     public String[] getAliases() {
-        return new String[]{"setup", "setup-guess-item"};
+        return new String[]{"setup", "setup-guess-item", "setup-trivia"};
     }
 
     @Override
     public void handleCommand(Message message, String command, String[] cmd) {
-        switch (cmd[0]) {
-            case "setup-guess-item":
-                message.delete().queue();
-                DiscordBot.getInstance()
-                        .getDialogueManager()
-                        .startConversation(message.getAuthor().getIdLong(), "guess-that-item");
-                break;
-            case "setup":
-                message.delete().queue();
-                DiscordBot.getInstance()
-                        .getDialogueManager()
-                        .startConversation(message.getAuthor().getIdLong(), "setup");
-                break;
-        }
+        message.delete().queue();
+        DiscordBot.getInstance()
+                .getDialogueManager()
+                .startConversation(message.getAuthor().getIdLong(), command);
     }
 }

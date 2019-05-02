@@ -5,6 +5,7 @@ import com.cryo.db.DBConnectionManager;
 import com.cryo.db.DatabaseConnection;
 import com.cryo.entities.Item;
 import com.cryo.entities.SQLQuery;
+import com.cryo.entities.Trivia;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -53,6 +54,11 @@ public class GamesConnection extends DatabaseConnection {
                     insert("points", "DEFAULT", id, points);
                 else
                     set("points", "points=?", "discord_id=?", points, id);
+                break;
+            case "get-trivia":
+                return select("trivia", GET_TRIVIA_QUESTIONS);
+            case "add-trivia":
+                insert("trivia", ((Trivia) data[1]).data());
                 break;
             case "get-guess-items":
                 return select("guess_items", GET_GUESS_ITEMS);
@@ -119,6 +125,18 @@ public class GamesConnection extends DatabaseConnection {
         return new Object[]{loadGuessItem(set)};
     };
 
+    private final SQLQuery GET_TRIVIA_QUESTIONS = set -> {
+        ArrayList<Trivia> questions = new ArrayList<>();
+        if (wasNull(set)) return new Object[]{questions};
+        while (next(set)) questions.add(loadTrivia(set));
+        return new Object[]{questions};
+    };
+
+    private final SQLQuery GET_TRIVIA_QUESTION = set -> {
+        if (empty(set)) return null;
+        return new Object[]{loadTrivia(set)};
+    };
+
     private Item loadGuessItem(ResultSet set) {
         int id = getInt(set, "id");
         String name = getString(set, "item_name");
@@ -126,5 +144,15 @@ public class GamesConnection extends DatabaseConnection {
         String hint = getString(set, "hint");
         Timestamp added = getTimestamp(set, "added");
         return new Item(id, name, itemPicUrl, hint, added);
+    }
+
+    private Trivia loadTrivia(ResultSet set) {
+        int id = getInt(set, "id");
+        String question = getString(set, "question");
+        String[] answers = DiscordBot.getInstance().getGson().fromJson(getString(set, "answers"), String[].class);
+        int correct = getInt(set, "correct");
+        Timestamp added = getTimestamp(set, "added");
+        Timestamp updated = getTimestamp(set, "updated");
+        return new Trivia(id, question, answers, correct, added, updated);
     }
 }

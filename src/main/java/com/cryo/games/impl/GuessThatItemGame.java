@@ -52,7 +52,8 @@ public class GuessThatItemGame extends Game {
             Message message = DiscordBot.getInstance().getJda().getGuildById(guildId).getTextChannelById(channelId).getMessageById(messageId).complete();
             if (message == null) return;
             String winner = params.length > 0 ? params[0] : null;
-            message.editMessage(buildWinningMessage(currentItem, winner)).queue();
+            message.editMessage(buildWinningMessage(winner)).queue();
+            currentItem = null;
         }
     }
 
@@ -82,15 +83,15 @@ public class GuessThatItemGame extends Game {
         return message.getIdLong();
     }
 
-    public static MessageEmbed buildWinningMessage(Item item, String winner) {
+    public MessageEmbed buildWinningMessage(String winner) {
         try {
             EmbedBuilder builder = new EmbedBuilder();
             builder.setTitle("Guess that Item! - WON");
             builder.setDescription("Use .guess (item name) to guess the item in the thumbnail and try to win some internet points!");
-            builder.setThumbnail(item.getItemPicUrl());
+            builder.setThumbnail(currentItem.getItemPicUrl());
             builder.addField("Game Over!", winner == null ? "Game ended. No one answered correctly in time." : "Correct item was guessed by: " + winner, false);
             if (winner != null)
-                builder.addField("Correct Answer", "Correct answer was: " + item.getItemName(), false);
+                builder.addField("Correct Answer", "Correct answer was: " + currentItem.getItemName(), false);
             return builder.build();
         } catch (Exception e) {
             e.printStackTrace();

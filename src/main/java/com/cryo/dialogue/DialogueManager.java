@@ -2,6 +2,8 @@ package com.cryo.dialogue;
 
 import com.cryo.entities.Dialogue;
 import com.cryo.utils.Utilities;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.PrivateChannel;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -45,10 +47,10 @@ public class DialogueManager {
         conversations.remove(id);
     }
 
-    public void continueConversation(long id, String response) {
+    public void continueConversation(PrivateChannel channel, Message message, long id, String response) {
         if (!conversations.containsKey(id)) return;
         String res[] = response.split(" ");
-        conversations.get(id).run(response, res);
+        conversations.get(id).run(channel, message, response, res);
     }
 
     public void load() {

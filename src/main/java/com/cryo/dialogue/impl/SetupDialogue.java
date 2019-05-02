@@ -6,6 +6,8 @@ import com.cryo.entities.Dialogue;
 import com.cryo.entities.Role;
 import com.cryo.utils.HexValidator;
 import com.mysql.jdbc.StringUtils;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.PrivateChannel;
 
 import java.util.ArrayList;
 
@@ -46,14 +48,14 @@ public class SetupDialogue extends Dialogue {
     }
 
     @Override
-    public void run(String response, String[] res) {
+    public void run(PrivateChannel channel, Message message, String response, String[] res) {
         if (response != null && response.equalsIgnoreCase("end")) {
             sendMessage("Goodbye...");
             end();
             return;
         }
         if (stage == 0) {
-            if (parseNext(response)) return;
+            if (parseNext(channel, message, response)) return;
             long guildId;
             try {
                 guildId = Long.parseLong(response);
@@ -64,18 +66,18 @@ public class SetupDialogue extends Dialogue {
             MiscConnection.connection().handleRequest("set-value", "guild-id", guildId);
             sendMessage("Guild ID set to " + guildId + ".");
             stage++;
-            run();
+            run(channel, message);
             return;
         } else if (stage == 1) {
             if (MiscConnection.getLong("guild-id") == 0) {
                 sendMessage("A guild ID must be set to set this setting. Please set a guild id later and try again to use this setting.");
                 sendMessage("Moving on...");
                 stage = 3;
-                run();
+                run(channel, message);
             }
             sendMessage("Enter channels to display world news in: (separate channel ids by a comma. You can get channel ids by typing .channel-id in the desired channel)");
         } else if (stage == 2) {
-            if (parseNext(response)) return;
+            if (parseNext(channel, message, response)) return;
             boolean error = false;
             String[] idStrings = response.split(", ?");
             ArrayList<Long> ids = new ArrayList<>();
@@ -93,7 +95,7 @@ public class SetupDialogue extends Dialogue {
             ids.forEach(id -> DiscordBot.getInstance().addNewsChannel(id));
             sendMessage("World news channels set. View these by using command .list-news-chats any in channel in the guild.");
             stage++;
-            run();
+            run(channel, message);
             return;
         } else if (stage == 3) {
             sendMessage("Now we're going to setup some roles for users. The following roles are already active:");
@@ -231,19 +233,19 @@ public class SetupDialogue extends Dialogue {
             switch (option) {
                 case 1:
                     stage = 14;
-                    run();
+                    run(channel, message);
                     return;
                 case 2:
                     stage = 18;
-                    run();
+                    run(channel, message);
                     return;
                 case 3:
                     stage = 22;
-                    run();
+                    run(channel, message);
                     return;
                 case 4:
                     stage = 26;
-                    run();
+                    run(channel, message);
                     return;
                 default:
                     sendMessage("Invalid option specified. Please try again.");
@@ -283,7 +285,7 @@ public class SetupDialogue extends Dialogue {
             if (response.equals("y") || response.equals("yes")) {
                 sendMessage("Requirement set.");
                 stage = 28;
-                run();
+                run(channel, message);
                 return;
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Okay. Let's try again.");
@@ -337,7 +339,7 @@ public class SetupDialogue extends Dialogue {
             if (response.equals("y") || response.equals("yes")) {
                 sendMessage("Requirement set.");
                 stage = 28;
-                run();
+                run(channel, message);
                 return;
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Okay. Let's try again.");
@@ -390,7 +392,7 @@ public class SetupDialogue extends Dialogue {
             if (response.equals("y") || response.equals("yes")) {
                 sendMessage("Requirement set.");
                 stage = 28;
-                run();
+                run(channel, message);
                 return;
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Okay. Let's try again.");
@@ -414,7 +416,7 @@ public class SetupDialogue extends Dialogue {
                 giveToPointsLeader = true;
                 sendMessage("Requirement set.");
                 stage = 28;
-                run();
+                run(channel, message);
                 return;
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Okay. Let's try again.");
@@ -473,10 +475,10 @@ public class SetupDialogue extends Dialogue {
         stage++;
     }
 
-    public boolean parseNext(String response) {
+    public boolean parseNext(PrivateChannel channel, Message message, String response) {
         if (!response.equalsIgnoreCase("next")) return false;
         stage++;
-        run();
+        run(channel, message);
         return true;
     }
 }
