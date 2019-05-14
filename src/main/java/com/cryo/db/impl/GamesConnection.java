@@ -4,6 +4,7 @@ import com.cryo.DiscordBot;
 import com.cryo.db.DBConnectionManager;
 import com.cryo.db.DatabaseConnection;
 import com.cryo.entities.Item;
+import com.cryo.entities.Place;
 import com.cryo.entities.SQLQuery;
 import com.cryo.entities.Trivia;
 
@@ -60,6 +61,11 @@ public class GamesConnection extends DatabaseConnection {
             case "add-trivia":
                 insert("trivia", ((Trivia) data[1]).data());
                 break;
+            case "get-places":
+                return select("places", GET_PLACES);
+            case "add-place":
+                insert("places", ((Place) data[1]).data());
+                break;
             case "get-guess-items":
                 return select("guess_items", GET_GUESS_ITEMS);
             case "add-guess-item":
@@ -104,6 +110,18 @@ public class GamesConnection extends DatabaseConnection {
             connection().handleRequest("remove-points", points, id);
         DiscordBot.getInstance().getRoleManager().recheckRoles(id);
     }
+
+    private final SQLQuery GET_PLACES = set -> {
+        ArrayList<Place> places = new ArrayList<>();
+        if (wasNull(set)) return new Object[]{places};
+        while (next(set)) places.add(loadPlace(set));
+        return new Object[]{places};
+    };
+
+    private final SQLQuery GET_PLACE = set -> {
+        if (empty(set)) return null;
+        return new Object[]{loadPlace(set)};
+    };
 
     private final SQLQuery GET_POINTS = set -> {
         if (empty(set)) return null;
@@ -154,5 +172,16 @@ public class GamesConnection extends DatabaseConnection {
         Timestamp added = getTimestamp(set, "added");
         Timestamp updated = getTimestamp(set, "updated");
         return new Trivia(id, question, answers, correct, added, updated);
+    }
+
+    private Place loadPlace(ResultSet set) {
+        int id = getInt(set, "id");
+        int x = getInt(set, "x");
+        int y = getInt(set, "y");
+        int plane = getInt(set, "plane");
+        String hint = getString(set, "hint");
+        String image = getString(set, "image");
+        Timestamp added = getTimestamp(set, "added");
+        return new Place(id, x, y, plane, hint, image, added);
     }
 }

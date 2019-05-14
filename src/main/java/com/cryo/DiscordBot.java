@@ -46,16 +46,16 @@ public class DiscordBot {
         gson = buildGson();
         loadProperties();
         connectionManager = new DBConnectionManager();
-        connectionManager.init();
-        commandManager = new CommandManager();
-        commandManager.loadCommands();
-        taskManager = new TaskManager();
-        taskManager.start();
         dialogueManager = new DialogueManager();
-        dialogueManager.load();
+        commandManager = new CommandManager();
+        taskManager = new TaskManager();
         gameManager = new GameManager();
-        gameManager.load();
         roleManager = new RoleManager();
+        connectionManager.init();
+        taskManager.start();
+        dialogueManager.load();
+        commandManager.loadCommands();
+        gameManager.load();
         roleManager.load();
         loadNewsChannels();
         try {
@@ -139,6 +139,11 @@ public class DiscordBot {
             public String[] getStatuses(String username) {
                 if (username.equalsIgnoreCase("cody")) return new String[]{"Owner"};
                 return new String[]{};
+            }
+
+            @Override
+            public boolean isDynamicRegion(int x, int y, int z) {
+                return false;
             }
         });
         instance.load();

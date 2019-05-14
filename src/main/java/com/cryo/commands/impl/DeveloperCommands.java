@@ -22,10 +22,11 @@ public class DeveloperCommands implements Command {
     public void handleCommand(Message message, String command, String[] cmd) {
         switch (cmd[0].toLowerCase()) {
             case "default":
-                String random = command.substring(8);
-                boolean linked = Links.linkDiscordAccount("cody", random);
-                message.getChannel().sendMessage("Linked: " + linked).queue();
+                int x = 3343;
+                int y = 3322;
+                String response = Links.handleInGamePlaceCommand("cody", x, y, 0);
                 message.delete().queue();
+                message.getChannel().sendMessage(response).queue();
                 break;
             case "start-game":
                 DiscordBot.getInstance().getGameManager().startNewGame(command.substring(11));

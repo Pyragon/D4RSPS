@@ -53,6 +53,15 @@ public class DialogueManager {
         conversations.get(id).run(channel, message, response, res);
     }
 
+    public Dialogue getConversation(long id) {
+        if (!conversations.containsKey(id)) return null;
+        return conversations.get(id);
+    }
+
+    public String[] getDialogueNameList() {
+        return dialogues.keySet().toArray(new String[dialogues.size()]);
+    }
+
     public void load() {
         try {
             for (Class<Dialogue> c : Utilities.getClasses("com.cryo.dialogue.impl")) {

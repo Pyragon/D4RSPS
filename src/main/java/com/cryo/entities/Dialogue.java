@@ -45,6 +45,18 @@ public abstract class Dialogue {
         return m == null ? 0L : m.getIdLong();
     }
 
+    protected void parseResponse(String response, Runnable onYes, Runnable onNo) {
+        response = response.toLowerCase();
+        if (response.equals("y") || response.equals("yes"))
+            onYes.run();
+        else if (response.equals("n") || response.equals("no"))
+            onNo.run();
+        else {
+            sendMessage("Unable to process response. Please try again.");
+            sendMessage("To end this dialogue, respond with 'end'.");
+        }
+    }
+
     public void end() {
         DiscordBot.getInstance().getDialogueManager().endConversation(id);
     }

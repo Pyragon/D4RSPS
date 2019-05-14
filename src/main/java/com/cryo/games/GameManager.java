@@ -42,6 +42,11 @@ public class GameManager {
         }
     }
 
+    public <K> K getGame(String key) {
+        if (!games.containsKey(key)) return null;
+        return (K) games.get(key);
+    }
+
     public void checkLength() {
         if (startTime == 0L || currentGame == null) return;
         long elapsed = System.currentTimeMillis() - startTime;

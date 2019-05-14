@@ -21,6 +21,9 @@ public class TriviaGame extends Game {
 
     private long messageId;
 
+    //TODO - update to randomize answer positions shown in embed message
+    //TODO - i.e. 1. a 2. b 3. c 4. d don't necessarily need to go in that order as long as 1 is defined as the correct answer
+
     static {
         Object[] data = GamesConnection.connection().handleRequest("get-trivia");
         if (data == null) questions = new ArrayList<>();
@@ -29,7 +32,7 @@ public class TriviaGame extends Game {
 
     @Override
     public String getName() {
-        return "Trivia";
+        return "trivia";
     }
 
     @Override
@@ -57,7 +60,12 @@ public class TriviaGame extends Game {
             long channelId = MiscConnection.getLong("trivia-game-channel");
             if (channelId == 0L) return;
             long guildId = MiscConnection.getLong("guild-id");
-            Message message = DiscordBot.getInstance().getJda().getGuildById(guildId).getTextChannelById(channelId).getMessageById(messageId).complete();
+            Message message = DiscordBot.getInstance()
+                    .getJda()
+                    .getGuildById(guildId)
+                    .getTextChannelById(channelId)
+                    .getMessageById(messageId)
+                    .complete();
             if (message == null) return;
             String winner = params.length > 0 ? params[0] : null;
             message.editMessage(buildWinningMessage(winner)).queue();
@@ -118,7 +126,7 @@ public class TriviaGame extends Game {
         List<Trivia> questions = TriviaGame.questions.subList((page - 1) * 10, end);
         questions.forEach(q -> {
             String value = "";
-            value += "1. " + q.getAnswers()[0] + "\u0009\u00092. " + q.getAnswers()[1] + "\n3. " + q.getAnswers()[2] + "\u0009\u00094. " + q.getAnswers()[3];
+            value += "1. " + q.getAnswers()[0] + " 2. " + q.getAnswers()[1] + "\n3. " + q.getAnswers()[2] + " 4. " + q.getAnswers()[3];
             builder.addField(q.getQuestion(), value, false);
         });
         return builder.build();

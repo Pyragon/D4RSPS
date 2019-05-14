@@ -86,7 +86,7 @@ public class GuessThatItemGame extends Game {
     public MessageEmbed buildWinningMessage(String winner) {
         try {
             EmbedBuilder builder = new EmbedBuilder();
-            builder.setTitle("Guess that Item! - WON");
+            builder.setTitle("Guess that Item! - " + (winner == null ? "LOST" : "WON"));
             builder.setDescription("Use .guess (item name) to guess the item in the thumbnail and try to win some internet points!");
             builder.setThumbnail(currentItem.getItemPicUrl());
             builder.addField("Game Over!", winner == null ? "Game ended. No one answered correctly in time." : "Correct item was guessed by: " + winner, false);

@@ -2,6 +2,11 @@ package com.cryo;
 
 import com.cryo.db.impl.AccountConnection;
 import com.cryo.db.impl.FriendsChatConnection;
+import com.cryo.db.impl.GamesConnection;
+import com.cryo.dialogue.impl.GuessThatPlaceDialogue;
+import com.cryo.entities.Dialogue;
+import com.cryo.entities.Game;
+import com.cryo.games.impl.GuessThatPlaceGame;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.requests.RestAction;
@@ -15,6 +20,11 @@ public class Links {
         channelIds.forEach(id -> DiscordBot.getInstance().getJda().getTextChannelById(id).sendMessage("[World News]" + news).queue());
     }
 
+    public static int getPoints(String username) {
+        Object[] data = AccountConnection.connection().handleRequest("get-discord-id", username);
+        return data == null ? 0 : GamesConnection.getPoints((long) data[0]);
+    }
+
     public static Object linkFriendsChat(String owner, long discordId) {
         Object[] data = FriendsChatConnection.connection().handleRequest("get-friends-chat", discordId);
         Object[] data2 = FriendsChatConnection.connection().handleRequest("get-discord-channel", owner);
@@ -23,6 +33,22 @@ public class Links {
         data = FriendsChatConnection.connection().handleRequest("link-friends-chat", owner, discordId);
         if (data == null) return false;
         return true;
+    }
+
+    //Returns false if there was an issue checking coordinates
+    //i.e. No guess game started and not using setup dialogue, account not linked, etc
+    public static String handleInGamePlaceCommand(String username, int x, int y, int plane) {
+        Object[] data = AccountConnection.connection().handleRequest("get-discord-id", username);
+        if (data == null) return "Your in-game account needs to be linked to a Discord account to play this game.";
+        long id = (long) data[0];
+        Dialogue dialogue = DiscordBot.getInstance().getDialogueManager().getConversation(id);
+        if (dialogue != null && (dialogue instanceof GuessThatPlaceDialogue)) {
+            ((GuessThatPlaceDialogue) dialogue).enteredCoordinates(x, y, plane);
+            return "Coordinates saved. Check the dialogue for further instructions.";
+        }
+        Game game = DiscordBot.getInstance().getGameManager().getCurrentGame();
+        if (game == null || !(game instanceof GuessThatPlaceGame)) return "Guess That Place game not active!";
+        return GuessThatPlaceGame.handleFindCommand(username, id, x, y, plane);
     }
 
     public static boolean linkDiscordAccount(String username, String randomString) {

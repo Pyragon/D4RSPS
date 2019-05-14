@@ -1,46 +1,50 @@
 General:
-    ✔ Create overall bot using JDA @done(19-04-11 20:37)
-    ✔ Ensure bot is usable by all revisions using a 'Helper' class @done(19-04-11 20:37)
-    ✔ Allow changing of status @done(19-04-11 20:37)
-    ✔ Create command manager @done(19-04-11 20:37)
     ☐ Move admin commands from UtilityCommands to DeveloperCommands
 
 Integration:
-    ✔ Allow linking of in-game and discord accounts @done(19-04-11 20:37)
-    ✔ Change commands to use in-game rights to check permissions @done(19-04-11 20:37)
-    ✔ Allow linking of in-game friends chats and discord channels @done(19-04-11 20:37)
 
 Games:
-    ✔ Create games that will run on random within discord channel @done(19-04-17 21:13)
-    ✔ Games will give points to the winner to be used in-game @done(19-04-17 21:13)
     Impl:
-        ✔ Guess that item @done(19-04-17 21:13)
-            ✔ Sends picture of random item (must be tradeable, no (#) items) @done(19-04-17 21:13)
-            ✔ User uses .guess to guess a name @done(19-04-17 21:13)
-            ✔ Gives 2 points to correct answer (name must be exact) @done(19-04-17 21:13)
-        ☐ Find that place
-            ☐ Picks screenshot from list of screenshots
-            ☐ Player must go in-game and stand within 15² tiles and type ::find or something
-            ☐ Create dialogue to add areas
-            ☐ Gives 4 points to first person, 3 to second, 2 to third
-            ☐ Ends game after 3 people, or if no one finds within 5 minutes
-        ☐ Multiple choice trivia
-            ☐ Game has list of questions
-            ☐ Each question has 4 different answers (1 is correct)
-            ☐ User uses .guess # to guess a certain answer.
-            ☐ Figure out how to make .guess not conflict with 'guess that item'
+        ☐ Guess that item
+            ☐ Show list with pagination in dialogue
 
 Roles:
-    ✔ Allow certain roles to be given on donation/account link/promotion @done(19-04-22 01:34)
-    ✔ Allow certain roles to be given on certain # of points achieved @done(19-04-22 18:11)
-    ☐ Give certain roles to the current points leader
-    ☐ Deleting role through Discord should delete role from database as well
 
 Dialogue System:
-    ✔ Create dialogue system similar to Matrix's @done(19-04-11 20:38)
-    ✔ Create setup dialogue for the bot @done(19-04-22 01:35)
 
 Settings:
-    ☐ Change 'guild-id' to be obtained through Helper class rather than setup dialogue
-    ☐ Change owner id to be obtained through Helper class
-    ☐ Ensure all calls for above are changed and working properly
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+    ✔ Find that place @done(2019-05-13 22:08) @project(Games / Impl)
+    ✔ Picks screenshot from list of screenshots @done(2019-05-13 22:08) @project(Games / Impl)
+    ✔ Player must go in-game and stand within 15² tiles and type ::find or something @done(2019-05-13 22:08) @project(Games / Impl)
+    ✔ Create dialogue to add areas @done(2019-05-13 22:08) @project(Games / Impl)
+    ✘ Gives 4 points to first person, 3 to second, 2 to third @cancelled(2019-05-13 22:08) @project(Games / Impl)
+    ✘ Ends game after 3 people, or if no one finds within 5 minutes @cancelled(2019-05-13 22:08) @project(Games / Impl)
+  ✘ Change 'guild-id' to be obtained through Helper class rather than setup dialogue @cancelled(2019-05-02 00:15) @project(Settings)
+  ✔ Change owner id to use guild's owner id @done(2019-05-02 00:23) @project(Settings)
+  ✔ Ensure all calls for above are changed and working properly @done(2019-05-02 00:23) @project(Settings)
+  ✔ Create overall bot using JDA @done(19-04-11 20:37)
+  ✔ Ensure bot is usable by all revisions using a 'Helper' class @done(19-04-11 20:37)
+  ✔ Allow changing of status @done(19-04-11 20:37)
+  ✔ Create command manager @done(19-04-11 20:37)
+  ✔ Allow linking of in-game and discord accounts @done(19-04-11 20:37)
+  ✔ Change commands to use in-game rights to check permissions @done(19-04-11 20:37)
+  ✔ Allow linking of in-game friends chats and discord channels @done(19-04-11 20:37)
+  ✔ Create games that will run on random within discord channel @done(19-04-17 21:13)
+  ✔ Games will give points to the winner to be used in-game @done(19-04-17 21:13)
+  ✔ Sends picture of random item (must be tradeable, no (#) items) @done(19-04-17 21:13)
+  ✔ User uses .guess to guess a name @done(19-04-17 21:13)
+  ✔ Gives 2 points to correct answer (name must be exact) @done(19-04-17 21:13)
+  ✔ Multiple choice trivia @done(2019-05-02 00:14) @project(Games / Impl)
+  ✔ Game has list of questions @done(2019-05-02 00:14) @project(Games / Impl)
+  ✔ Each question has 4 different answers (1 is correct) @done(2019-05-02 00:14) @project(Games / Impl)
+  ✔ User uses .guess # to guess a certain answer. @done(2019-05-02 00:14) @project(Games / Impl)
+  ✔ Figure out how to make .guess not conflict with 'guess that item' @done(2019-05-02 00:14) @project(Games / Impl)
+  ✔ Allow certain roles to be given on donation/account link/promotion @done(19-04-22 01:34)
+  ✔ Allow certain roles to be given on certain # of points achieved @done(19-04-22 18:11)
+  ✔ Give certain roles to the current points leader @done(2019-05-02 00:14) @project(Roles)
+  ✔ Deleting role through Discord should delete role from database as well @done(2019-05-02 00:14) @project(Roles)
+  ✔ Create dialogue system similar to Matrix's @done(19-04-11 20:38)
+  ✔ Create setup dialogue for the bot @done(19-04-22 01:35)

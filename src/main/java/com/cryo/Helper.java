@@ -18,6 +18,8 @@ public interface Helper {
 
     String[] getStatuses(String username);
 
+    boolean isDynamicRegion(int x, int y, int z);
+
     default String getStatus() {
         return ".help | " + getPlayersOnline() + " online";
     }

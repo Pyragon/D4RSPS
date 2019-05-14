@@ -22,7 +22,7 @@ public class GuessThatItemDialogue extends Dialogue {
 
     @Override
     public String getName() {
-        return "guess-that-item";
+        return "setup-item-guess";
     }
 
     @Override
