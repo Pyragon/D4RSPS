@@ -8,7 +8,7 @@ public class FinishLinkCommand implements Command {
 
     @Override
     public int getPermissionsReq(String command) {
-        return 0;
+        return 2;
     }
 
     @Override
