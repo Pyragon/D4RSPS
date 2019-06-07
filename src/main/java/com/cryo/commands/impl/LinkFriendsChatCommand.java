@@ -36,7 +36,6 @@ public class LinkFriendsChatCommand implements Command {
             return;
         }
         String name = command.substring(10);
-        System.out.println(name);
         if (StringUtils.isEmptyOrWhitespaceOnly(name)) {
             message.getChannel().sendMessage("Invalid syntax. Correct usage: .link-chat (friends_chat)").queue();
             return;
