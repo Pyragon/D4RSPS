@@ -25,6 +25,10 @@ public class Links {
         return data == null ? 0 : GamesConnection.getPoints((long) data[0]);
     }
 
+    public static void recheckAllRoles() {
+        DiscordBot.getInstance().getRoleManager().recheckAllRoles();
+    }
+
     public static Object linkFriendsChat(String owner, long discordId) {
         Object[] data = FriendsChatConnection.connection().handleRequest("get-friends-chat", discordId);
         Object[] data2 = FriendsChatConnection.connection().handleRequest("get-discord-channel", owner);
