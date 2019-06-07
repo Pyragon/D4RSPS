@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public class InGameStatsCommands implements Command {
 
+    public static String[] NAMES = {"Hat", "Cape", "Amulet", "Weapon", "Chest", "Shield", null, "Legs", null, "Gloves", "Feet", null, "Ring", "Arrows", "Aura"};
+
     @Override
     public int getPermissionsReq(String command) {
         return 0;
@@ -48,11 +50,15 @@ public class InGameStatsCommands implements Command {
                 for (int i = 0; i < 25; i++) {
                     int level = DiscordBot.getInstance().getHelper().getLevel(name, i);
                     Optional<Emote> optional = getEmoji(Utilities.SKILL_NAME[i]);
-                    if (level == -1 || !optional.isPresent()) {
+                    if (level == -1) {
                         message.getChannel().sendMessage("Unable to load stats for that player.").queue();
                         return;
                     }
-                    builder.append(optional.get().getAsMention() + " - " + level + " ");
+                    if (!optional.isPresent()) {
+                        builder.append(Utilities.SKILL_NAME[i] + " - " + level);
+                        if (i != 24) builder.append(", ");
+                    } else
+                        builder.append(optional.get().getAsMention() + " - " + level + " ");
                 }
                 message.getChannel().sendMessage(builder.toString()).queue();
                 break;
@@ -91,7 +97,13 @@ public class InGameStatsCommands implements Command {
                     String equipName = DiscordBot.getInstance().getHelper().getEquip(name, i);
                     if (equipName == null) continue;
                     Optional<Emote> optional = getEmoji("equip" + i);
-                    if (!optional.isPresent()) continue;
+                    if (!optional.isPresent()) {
+                        String slotName = NAMES[i];
+                        if (slotName == null) continue;
+                        builder.append(slotName + " - " + equipName);
+                        if (i != 14) builder.append(", ");
+                        continue;
+                    }
                     builder.append(optional.get().getAsMention() + " - " + equipName + " ");
                 }
                 message.getChannel().sendMessage(builder.toString()).queue();
@@ -112,11 +124,15 @@ public class InGameStatsCommands implements Command {
                 for (int i = 0; i < 25; i++) {
                     double xp = DiscordBot.getInstance().getHelper().getXp(name, i);
                     Optional<Emote> optional = getEmoji(Utilities.SKILL_NAME[i]);
-                    if (xp == -1 || !optional.isPresent()) {
+                    if (xp == -1) {
                         message.getChannel().sendMessage("Unable to load stats for that player.").queue();
                         return;
                     }
-                    builder.append(optional.get().getAsMention() + " - " + format.format(xp) + " ");
+                    if (!optional.isPresent()) {
+                        builder.append(Utilities.SKILL_NAME[i] + " - " + format.format(xp));
+                        if (i != 24) builder.append(", ");
+                    } else
+                        builder.append(optional.get().getAsMention() + " - " + format.format(xp) + " ");
                 }
                 message.getChannel().sendMessage(builder.toString()).queue();
                 break;
