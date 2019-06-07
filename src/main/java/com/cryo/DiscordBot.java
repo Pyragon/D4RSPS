@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -38,9 +39,16 @@ public class DiscordBot {
     private ArrayList<Long> worldNewsChannels;
 
     @Getter
+    @Setter
     private static DiscordBot instance;
 
     private final Helper helper;
+
+    public static DiscordBot startBot(Helper helper) {
+        instance = new DiscordBot(helper);
+        instance.load();
+        return instance;
+    }
 
     public void load() {
         gson = buildGson();
