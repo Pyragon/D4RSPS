@@ -15,7 +15,7 @@ public class DeveloperCommands implements Command {
 
     @Override
     public String[] getAliases() {
-        return new String[]{"set-points", "set-total-points", "start-game", "default"};
+        return new String[]{"add-news-channel", "remove-news-channel", "recheck-roles", "list-roles", "set-points", "set-total-points", "start-game", "default"};
     }
 
     @Override
@@ -44,6 +44,23 @@ public class DeveloperCommands implements Command {
                 GamesConnection.setPoints(message.getAuthor().getIdLong(), points, cmd[0].toLowerCase().contains("total"));
                 message.delete().queue();
                 message.getChannel().sendMessage("Points set to: " + points + ".").queue();
+                break;
+            case "add-news-channel":
+                long channelId = message.getChannel().getIdLong();
+                DiscordBot.getInstance().addNewsChannel(channelId);
+                break;
+            case "remove-news-channel":
+                channelId = message.getChannel().getIdLong();
+                DiscordBot.getInstance().removeNewsChannel(channelId);
+                break;
+            case "recheck-roles":
+                message.delete().queue();
+                message.getChannel().sendMessage("Rechecking all roles...").queue();
+                DiscordBot.getInstance().getRoleManager().recheckAllRoles();
+                break;
+            case "list-roles":
+                message.delete().queue();
+                message.getChannel().sendMessage(DiscordBot.getInstance().getRoleManager().getRolesEmbed()).queue();
                 break;
         }
     }

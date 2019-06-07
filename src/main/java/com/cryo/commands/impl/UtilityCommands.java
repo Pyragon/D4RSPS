@@ -14,12 +14,20 @@ public class UtilityCommands implements Command {
 
     @Override
     public int getPermissionsReq(String command) {
-        return 1;
+        switch (command) {
+            case "purge":
+            case "guild-id":
+            case "my-id":
+            case "channel-id":
+                return 1;
+            default:
+                return 0;
+        }
     }
 
     @Override
     public String[] getAliases() {
-        return new String[]{"purge", "recheck-roles", "list-roles", "guild-id", "my-id", "channel-id", "add-news-channel", "remove-news-channel", "guess"};
+        return new String[]{"purge", "guild-id", "my-id", "channel-id", "guess"};
     }
 
     @Override
@@ -64,23 +72,6 @@ public class UtilityCommands implements Command {
                 break;
             case "guild-id":
                 message.getChannel().sendMessage("Guild ID: " + message.getGuild().getIdLong()).queue();
-                break;
-            case "add-news-channel":
-                channelId = message.getChannel().getIdLong();
-                DiscordBot.getInstance().addNewsChannel(channelId);
-                break;
-            case "remove-news-channel":
-                channelId = message.getChannel().getIdLong();
-                DiscordBot.getInstance().removeNewsChannel(channelId);
-                break;
-            case "recheck-roles":
-                message.delete().queue();
-                message.getChannel().sendMessage("Rechecking all roles...").queue();
-                DiscordBot.getInstance().getRoleManager().recheckAllRoles();
-                break;
-            case "list-roles":
-                message.delete().queue();
-                message.getChannel().sendMessage(DiscordBot.getInstance().getRoleManager().getRolesEmbed()).queue();
                 break;
         }
     }
