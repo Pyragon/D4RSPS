@@ -45,6 +45,7 @@ public class CommandManager {
         if (commands.containsKey(opcode)) {
             Command commandObj = commands.get(opcode);
             int rights = AccountConnection.getRights(message.getAuthor().getIdLong());
+            if(message.getGuild().getOwner().getUser().getIdLong() == message.getAuthor().getIdLong()) rights = 2;
             if (commandObj.getPermissionsReq(command) > rights) return false;
             commandObj.handleCommand(message, command, cmd);
             return true;

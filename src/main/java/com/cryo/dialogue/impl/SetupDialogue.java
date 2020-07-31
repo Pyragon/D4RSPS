@@ -258,7 +258,7 @@ public class SetupDialogue extends Dialogue {
             if (response.equals("y") || response.equals("yes")) {
                 giveToInGamestatus = true;
                 sendMessage("Sounds good. Now, enter the name of the in-game rank that you would like this role to be given to.");
-                sendMessage("Full instructions can be found here: TODO");
+                sendMessage("Full details can be found within the rune-server tutorial thread.");
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Okay. Let's try again.");
                 sendMessage("When would you like this role to be given? Please select from the following options. And respond with the option #");

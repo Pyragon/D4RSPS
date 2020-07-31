@@ -20,7 +20,7 @@ public class DialogueCommands implements Command {
     @Override
     public void handleCommand(Message message, String command, String[] cmd) {
         if (command.equals("setup")) {
-            long ownerId = DiscordBot.getInstance().getJda().getGuildById(MiscConnection.getLong("guild-id")).getOwner().getUser().getIdLong();
+            long ownerId = message.getGuild().getOwner().getUser().getIdLong();
             if (ownerId != message.getAuthor().getIdLong()) {
                 message.delete().queue();
                 message.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage("Only the owner of the guild can use this command.").queue());
