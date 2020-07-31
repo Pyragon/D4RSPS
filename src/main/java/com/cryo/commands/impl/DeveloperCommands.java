@@ -4,6 +4,7 @@ import com.cryo.DiscordBot;
 import com.cryo.Links;
 import com.cryo.db.impl.GamesConnection;
 import com.cryo.entities.Command;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Message;
 
 public class DeveloperCommands implements Command {
@@ -61,6 +62,11 @@ public class DeveloperCommands implements Command {
             case "list-roles":
                 message.delete().queue();
                 message.getChannel().sendMessage(DiscordBot.getInstance().getRoleManager().getRolesEmbed()).queue();
+                break;
+            case "change-status":
+                String status = message.getContentRaw().substring(message.getContentRaw().indexOf(" ")+1);
+                message.delete().queue();
+                DiscordBot.getInstance().getJda().getPresence().setGame(Game.playing(status));
                 break;
         }
     }
