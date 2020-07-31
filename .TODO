@@ -1,9 +1,13 @@
 General:
-    ☐ Move admin commands from UtilityCommands to DeveloperCommands
+    ✔ Move admin commands from UtilityCommands to DeveloperCommands @done (2020-07-31, 2:01:18 p.m.)
+    ☐ Add method in Links for easily sending messages to channels
+    ☐ Add method in Links for easily obtaining user's discord id
+    ☐ Add method in Links for easily sending user's private messages
 
 Integration:
 
 Games:
+    ☐ Allow for games to be added from outside library
     Impl:
         ☐ Guess that item
             ☐ Show list with pagination in dialogue
@@ -11,6 +15,10 @@ Games:
 Roles:
 
 Dialogue System:
+    ☐ Allow for dialogues to be added and run from outside library
+
+Commands:
+    ☐ Allow for commands to be added and parsed from outside library
 
 Settings:
 
