@@ -9,6 +9,7 @@ import com.cryobot.entities.Game;
 import com.cryobot.games.impl.GuessThatPlaceGame;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.requests.RestAction;
 
 import java.util.ArrayList;
@@ -18,6 +19,30 @@ public class Links {
     public static void sendWorldNews(String news) {
         ArrayList<Long> channelIds = DiscordBot.getInstance().getWorldNewsChannels();
         channelIds.forEach(id -> DiscordBot.getInstance().getJda().getTextChannelById(id).sendMessage("[World News]" + news).queue());
+    }
+
+    public static void sendMessage(long channelId, String message) {
+        TextChannel channel = DiscordBot.getInstance().getJda().getTextChannelById(channelId);
+        if(channel == null) return;
+        channel.sendMessage(message).queue();
+    }
+
+    public static void sendPrivateMessage(long id, String message) {
+        PrivateChannel channel = DiscordBot.getInstance().getJda().getUserById(id).openPrivateChannel().complete();
+        if(channel == null) return;
+        channel.sendMessage(message).queue();
+    }
+
+    public static long getDiscordId(String username) {
+        Object[] data = AccountConnection.connection().handleRequest("get-discord-id", username);
+        if(data == null) return -1;
+        return (long) data[0];
+    }
+
+    public static String getUsername(long discordId) {
+        Object[] data = AccountConnection.connection().handleRequest("get-username", discordId);
+        if(data == null) return null;
+        return (String) data[0];
     }
 
     public static int getPoints(String username) {

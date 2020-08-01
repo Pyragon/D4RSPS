@@ -1,10 +1,12 @@
 package com.cryobot.dialogue;
 
+import com.cryobot.DiscordBot;
 import com.cryobot.dialogue.impl.GuessThatItemDialogue;
 import com.cryobot.dialogue.impl.GuessThatPlaceDialogue;
 import com.cryobot.dialogue.impl.SetupDialogue;
 import com.cryobot.dialogue.impl.TriviaDialogue;
 import com.cryobot.entities.Dialogue;
+import com.cryobot.entities.Game;
 import com.cryobot.entities.Trivia;
 import com.cryobot.games.impl.GuessThatItemGame;
 import com.cryobot.games.impl.GuessThatPlaceGame;
@@ -15,6 +17,7 @@ import net.dv8tion.jda.core.entities.PrivateChannel;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DialogueManager {
@@ -78,6 +81,15 @@ public class DialogueManager {
                 Constructor constructor = c.getConstructor(new Class[]{long.class});
                 Dialogue dialogue = (Dialogue) constructor.newInstance(new Object[]{0L});
                 dialogues.put(dialogue.getName(), c);
+            }
+            ArrayList<Dialogue> extra = DiscordBot.getInstance().getHelper().getExtraDialogues();
+            if(extra == null || extra.size() == 0) return;
+            for(Dialogue dialogue : extra) {
+                if(dialogues.containsKey(dialogue.getName())) {
+                    System.err.println("[DialogueManager]Duplicate dialogue exists: "+dialogue.getName());
+                    continue;
+                }
+                dialogues.put(dialogue.getName(), (Class<Dialogue>) dialogue.getClass());
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();

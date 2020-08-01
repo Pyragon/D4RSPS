@@ -1,5 +1,6 @@
 package com.cryobot.games;
 
+import com.cryobot.DiscordBot;
 import com.cryobot.entities.Game;
 import com.cryobot.games.impl.GuessThatItemGame;
 import com.cryobot.games.impl.GuessThatPlaceGame;
@@ -34,6 +35,15 @@ public class GameManager {
                 Object o = c.newInstance();
                 if (!(o instanceof Game)) continue;
                 Game game = (Game) o;
+                games.put(game.getName(), game);
+            }
+            ArrayList<Game> extra = DiscordBot.getInstance().getHelper().getExtraGames();
+            if(extra == null || extra.size() == 0) return;
+            for(Game game : extra) {
+                if(games.containsKey(game.getName())) {
+                    System.err.println("[GameManager]Duplicate game exists: "+game.getName());
+                    continue;
+                }
                 games.put(game.getName(), game);
             }
         } catch (IllegalAccessException e) {

@@ -4,6 +4,7 @@ import com.cryobot.commands.CommandManager;
 import com.cryobot.db.DBConnectionManager;
 import com.cryobot.db.impl.MiscConnection;
 import com.cryobot.dialogue.DialogueManager;
+import com.cryobot.entities.Command;
 import com.cryobot.games.GameManager;
 import com.cryobot.tasks.TaskManager;
 import com.cryobot.utils.RoleManager;
@@ -16,6 +17,7 @@ import lombok.Setter;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.hooks.AnnotatedEventManager;
 
 import javax.security.auth.login.LoginException;
@@ -153,8 +155,33 @@ public class DiscordBot {
             public boolean isDynamicRegion(int x, int y, int z) {
                 return false;
             }
+
+            @Override
+            public ArrayList<Command> getExtraCommands() {
+                ArrayList<Command> list = new ArrayList<>();
+                list.add(new TestCommand());
+                return list;
+            }
         });
         instance.load();
+    }
+
+    public static class TestCommand implements Command {
+
+        @Override
+        public int getPermissionsReq(String command) {
+            return 0;
+        }
+
+        @Override
+        public String[] getAliases() {
+            return new String[] { "testcom" };
+        }
+
+        @Override
+        public void handleCommand(Message message, String command, String[] cmd) {
+            message.getChannel().sendMessage("test").queue();
+        }
     }
 
     public long getId() {

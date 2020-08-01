@@ -4,10 +4,12 @@ import com.cryobot.DiscordBot;
 import com.cryobot.commands.impl.*;
 import com.cryobot.db.impl.AccountConnection;
 import com.cryobot.entities.Command;
+import com.cryobot.entities.Game;
 import com.cryobot.utils.Utilities;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
@@ -26,6 +28,17 @@ public class CommandManager {
                 if (!(o instanceof Command)) continue;
                 Command command = (Command) o;
                 Stream.of(command.getAliases()).forEach(c2 -> commands.put(c2, command));
+            }
+            ArrayList<Command> extra = DiscordBot.getInstance().getHelper().getExtraCommands();
+            if(extra == null || extra.size() == 0) return;
+            for(Command command : extra) {
+                for(String com : command.getAliases()) {
+                    if(commands.containsKey(com)) {
+                        System.err.println("[CommandManager]Duplicate command exists: "+com);
+                        continue;
+                    }
+                    commands.put(com, command);
+                }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();

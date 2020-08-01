@@ -1,5 +1,11 @@
 package com.cryobot;
 
+import com.cryobot.entities.Command;
+import com.cryobot.entities.Dialogue;
+import com.cryobot.entities.Game;
+
+import java.util.ArrayList;
+
 public interface Helper {
 
     int getRights(String username);
@@ -19,6 +25,12 @@ public interface Helper {
     String[] getStatuses(String username);
 
     boolean isDynamicRegion(int x, int y, int z);
+
+    default ArrayList<Game> getExtraGames() { return new ArrayList<>(); }
+
+    default ArrayList<Dialogue> getExtraDialogues() { return new ArrayList<>(); }
+
+    default ArrayList<Command> getExtraCommands() { return new ArrayList<>(); }
 
     default String getStatus() {
         return ".help | " + getPlayersOnline() + " online";
