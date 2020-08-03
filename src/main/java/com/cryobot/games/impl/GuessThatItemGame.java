@@ -32,7 +32,7 @@ public class GuessThatItemGame extends Game {
     public void processGuessCommand(Message message, String command, String[] cmd) {
         boolean success = command.substring(6).equalsIgnoreCase(currentItem.getItemName());
         if (success) {
-            GamesConnection.addPoints(message.getAuthor().getIdLong(), 2);
+            GamesConnection.addPoints(message.getAuthor().getIdLong(), getPoints());
             Object[] data = GamesConnection.connection().handleRequest("get-points", message.getAuthor().getIdLong());
             int points = 0;
             if (data != null)
