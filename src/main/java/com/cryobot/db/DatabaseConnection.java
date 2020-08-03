@@ -281,7 +281,7 @@ public abstract class DatabaseConnection {
             String query = "INSERT INTO `" + database + "` VALUES(" + insert.toString() + ")";
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             setParams(stmt, objects);
-            System.out.println(stmt);
+//            System.out.println(stmt);
             stmt.execute();
             ResultSet set = stmt.getGeneratedKeys();
             if (set.next()) return set.getInt(1);

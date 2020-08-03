@@ -54,6 +54,12 @@ public class Links {
         DiscordBot.getInstance().getRoleManager().recheckAllRoles();
     }
 
+    public static void checkFriendsChatMessage(String chatName, String displayName, String message) {
+        Object[] data = FriendsChatConnection.connection().handleRequest("get-discord-channel", chatName);
+        if(data == null) return;
+        DiscordBot.getInstance().getJda().getTextChannelById((long) data[0]).sendMessage("**"+displayName+"**: "+message).queue();
+    }
+
     public static Object linkFriendsChat(String owner, long discordId) {
         Object[] data = FriendsChatConnection.connection().handleRequest("get-friends-chat", discordId);
         Object[] data2 = FriendsChatConnection.connection().handleRequest("get-discord-channel", owner);
