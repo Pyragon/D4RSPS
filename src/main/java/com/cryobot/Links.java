@@ -117,7 +117,7 @@ public class Links {
         String username = (String) data[0];
         message.delete().queue();
         String displayName = DiscordBot.getInstance().getHelper().getDisplayName(username);
-        message.getChannel().sendMessage("[Discord]**" + displayName + "**: " + message.getContentRaw()).queue();
+        message.getChannel().sendMessage("**" + displayName + "**: " + message.getContentRaw()).queue();
         DiscordBot.getInstance().getHelper().sendFriendsChatMessage(owner, username, message.getContentRaw());
     }
 }
