@@ -12,7 +12,7 @@ public interface Helper {
 
     String getDisplayName(String username);
 
-    void sendFriendsChatMessage(String owner, String username, String message);
+    void sendFriendsChatMessage(String owner, String displayName, String message);
 
     int getPlayersOnline();
 

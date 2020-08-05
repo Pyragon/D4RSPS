@@ -121,8 +121,8 @@ public class DiscordBot {
             }
 
             @Override
-            public void sendFriendsChatMessage(String owner, String username, String message) {
-                Links.handleServerMessage("cody", "Cody", "Response");
+            public void sendFriendsChatMessage(String owner, String displayName, String message) {
+                Links.handleServerMessage(owner, displayName, message);
             }
 
             @Override
