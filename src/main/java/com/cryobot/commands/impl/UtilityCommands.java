@@ -91,7 +91,7 @@ public class UtilityCommands implements Command {
                             .addField(".my-id", "Responds with your discord id.", true)
                             .addField(".channel-id", "Responds with the id of the channel you are currently in", true);
                 }
-                if(rights > 2) {
+                if(rights > 1) {
                     builder = builder.addField(".link-chat (owner)", "Links the in-game friends chat belonging to (owner) with the channel you are currently in.", true)
                             .addField(".unlink-chat", "Unlinks the friends chats associated with the channel you are currently in.", true)
                             .addField(".finish-link (random) (in-game name)", "Developer command to finish the process linking (in-game name) with the discord account that did .link and got (random)", true)
