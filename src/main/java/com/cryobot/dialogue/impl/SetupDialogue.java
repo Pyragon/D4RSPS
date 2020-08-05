@@ -9,6 +9,7 @@ import com.mysql.jdbc.StringUtils;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.PrivateChannel;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class SetupDialogue extends Dialogue {
@@ -16,6 +17,8 @@ public class SetupDialogue extends Dialogue {
     public SetupDialogue(long id) {
         super(id);
     }
+
+    private long existingId;
 
     private String roleName;
     private boolean hasColour;
@@ -121,7 +124,7 @@ public class SetupDialogue extends Dialogue {
                 return;
             }
             if (DiscordBot.getInstance().getRoleManager().roleNameExists(roleName)) {
-                sendMessage("Role name already exists. Would you like to overwrite this role?");
+                sendMessage("Role name already exists. Would you like to use the existing role?");
                 stage = 30;
                 return;
             }
@@ -447,9 +450,12 @@ public class SetupDialogue extends Dialogue {
                 sendMessage("Would you like to go through all of the currently linked accounts and assign this role to those that meet the requirement?");
                 return;
             }
-            sendMessage("Everything is in order. Adding role" + (checkOld ? " and giving to users who meet requirement" : "."));
-            Role role = new Role(-1, 0L, roleName, hasColour, colour == null ? "" : colour, displaySeparately, mentionedByAnyone, giveOnPointsRequirement, pointsRequirement, giveOnCurrentPointsRequirement, currentPointsRequirement, giveToPointsLeader, giveToInGamestatus, inGameStatus, null);
-            DiscordBot.getInstance().getRoleManager().saveRole(role, overwrite);
+            sendMessage("Everything is in order. "+(existingId != 0L ? "Editing" : "Adding")+" role" + (checkOld ? " and giving to users who meet requirement" : "."));
+            Role role = new Role(-1, existingId, roleName, hasColour, colour == null ? "" : colour, displaySeparately, mentionedByAnyone, giveOnPointsRequirement, pointsRequirement, giveOnCurrentPointsRequirement, currentPointsRequirement, giveToPointsLeader, giveToInGamestatus, inGameStatus, null);
+            if(existingId != 0L)
+                DiscordBot.getInstance().getRoleManager().editRole(role);
+            else
+                DiscordBot.getInstance().getRoleManager().saveRole(role, overwrite);
             if (checkOld)
                 DiscordBot.getInstance().getRoleManager().recheckAllRoles();
             sendMessage("Would you like to add another role?");
@@ -457,9 +463,21 @@ public class SetupDialogue extends Dialogue {
         } else if (stage == 30) {
             response = response.toLowerCase();
             if (response.equals("y") || response.equals("yes")) {
-                overwrite = true;
-                sendMessage("Okay. What colour would you like this role to be? Respond with 'none' to use the default colour.");
-                stage = 7;
+                net.dv8tion.jda.core.entities.Role role = DiscordBot.getInstance().getRoleManager().getRole(roleName);
+                if(role == null) {
+                    sendMessage("Error. Please try entering another name.");
+                    stage = 5;
+                    return;
+                }
+                existingId = role.getIdLong();
+                hasColour = role.getColor() != null;
+                Color colour = role.getColor();
+                this.colour = String.format("#%02x%02x%02x", colour.getRed(), colour.getGreen(), colour.getBlue());
+                displaySeparately = role.isHoisted();
+                mentionedByAnyone = role.isMentionable();
+                sendMessage("Alright. When would you like this role to be given? Please select from the following options. And respond with the option #");
+                sendMessage(DiscordBot.getInstance().getRoleManager().getRoleGiveOptionsEmbed());
+                stage = 13;
                 return;
             } else if (response.equals("n") || response.equals("no")) {
                 sendMessage("Okay. What would you like this role's name to be?");

@@ -66,6 +66,20 @@ public class RoleManager {
         RolesConnection.connection().handleRequest("add-role", role);
     }
 
+    public void editRole(Role role) {
+        long guildId = MiscConnection.getLong("guild-id");
+        if (guildId == 0L) return;
+        Guild guild = DiscordBot.getInstance().getJda().getGuildById(guildId);
+        net.dv8tion.jda.core.entities.Role existing = guild.getRoleById(role.getRoleId());
+        existing.getManager().setHoisted(role.isDisplaySeparately()).queue();
+        existing.getManager().setMentionable(role.isMentionableByAnyone()).queue();
+        if(role.isUsingColour())
+            existing.getManager().setColor(Color.decode(role.getRoleColour()));
+        roles.put(role.getRoleId(), role);
+        RolesConnection.connection().handleRequest("remove-role", role.getId());
+        RolesConnection.connection().handleRequest("add-role", role);
+    }
+
     public void roleDeleted(long id) {
         if (!roles.containsKey(id)) return;
         Role role = roles.get(id);
@@ -173,6 +187,12 @@ public class RoleManager {
     public boolean roleNameExists(String name) {
         Guild guild = DiscordBot.getInstance().getJda().getGuildById(MiscConnection.getLong("guild-id"));
         return guild.getRolesByName(name, true).size() > 0;
+    }
+
+    public net.dv8tion.jda.core.entities.Role getRole(String name) {
+        if(!roleNameExists(name)) return null;
+        Guild guild = DiscordBot.getInstance().getJda().getGuildById(MiscConnection.getLong("guild-id"));
+        return guild.getRolesByName(name, true).get(0);
     }
 
     public boolean hasRole(User user, Role role) {
