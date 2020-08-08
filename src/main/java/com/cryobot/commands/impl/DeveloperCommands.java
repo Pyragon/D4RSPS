@@ -26,7 +26,6 @@ public class DeveloperCommands implements Command {
     public void handleCommand(Message message, String command, String[] cmd) {
         switch (cmd[0].toLowerCase()) {
             case "default":
-                Links.checkFriendsChatMessage("help", "TestAcc", "Test Message");
                 break;
             case "list-games":
                 EmbedBuilder builder = new EmbedBuilder().setTitle("Currently managed games");

@@ -27,7 +27,7 @@ public abstract class DatabaseConnection {
             String user = prop.getProperty("db-user");
             String pass = prop.getProperty("db-pass");
             String ip = prop.getProperty("db-host");
-            connection = DriverManager.getConnection("jdbc:mysql://" + ip + "/" + database, user, pass);
+            connection = DriverManager.getConnection("jdbc:mysql://" + ip + "/" + database+"?characterEncoding=latin1&useConfigs=maxPerformance", user, pass);
         } catch (SQLException e) {
             e.printStackTrace();
         }
