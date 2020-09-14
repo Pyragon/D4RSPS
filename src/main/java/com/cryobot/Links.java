@@ -89,6 +89,21 @@ public class Links {
         return true;
     }
 
+    public static String beginDiscordLinkFromServer(String username) {
+        if(getDiscordId(username) != -1) return null;
+        Object[] data = AccountConnection.connection().handleRequest("add-server-verification", username);
+        if(data == null) return null;
+        return (String) data[0];
+    }
+
+    public static boolean linkDiscordAccountFromServer(long discordId, String randomString) {
+        Object[] data = AccountConnection.connection().handleRequest("verify-server", discordId, randomString);
+        boolean linked = data != null;
+        if (!linked) return false;
+        DiscordBot.getInstance().getRoleManager().recheckRoles(DiscordBot.getInstance().getJda().getUserById(discordId));
+        return true;
+    }
+
     public static void handleServerMessage(String owner, String displayName, String message) {
         Object[] data = FriendsChatConnection.connection().handleRequest("get-discord-channel", owner);
         if (data == null) return;

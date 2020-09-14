@@ -43,6 +43,18 @@ public class AccountConnection extends DatabaseConnection {
                     return null;
                 insert("linked", new Object[]{"DEFAULT", username, discordId, "DEFAULT"});
                 return new Object[]{discordId};
+            case "verify-server":
+                discordId = (long) data[1];
+                random = (String) data[2];
+                data = select("verify_server", "random=?", GET_SERVER_VERIFICATION, random);
+                if(data == null) return null;
+                username = (String) data[0];
+                expiry = (Timestamp) data[1];
+                delete("verify_server", "random=?", random);
+                if(expiry.getTime() <= System.currentTimeMillis())
+                    return null;
+                insert("linked", new Object[] { "DEFAULT", username, discordId, "DEFAULT" });
+                return new Object[] { username };
             case "unlink":
                 delete("linked", "discord_id=?", data[1]);
                 break;
@@ -56,13 +68,20 @@ public class AccountConnection extends DatabaseConnection {
                 data = select("linked", "discord_id=?", GET_LINKED_DATA, data[1]);
                 if (data == null) return null;
                 return new Object[]{data[1]};
+            case "add-server-verification":
+                username = (String) data[1];
+                random = randomString(6);
+                delete("verify_server", "username=?", username);
+                long millis = System.currentTimeMillis() + (1000 * 60 * 60 * 24);
+                insert("verify", new Object[]{"DEFAULT", username, random, new Timestamp(millis)});
+                return new Object[]{random};
             case "add-verification":
                 discordId = (long) data[1];
-                String rand = randomString(6);
+                random = randomString(6);
                 delete("verify", "discord_id=?", discordId);
-                long millis = System.currentTimeMillis() + (1000 * 60 * 60 * 24);
-                insert("verify", new Object[]{"DEFAULT", discordId, rand, new Timestamp(millis)});
-                return new Object[]{rand};
+                millis = System.currentTimeMillis() + (1000 * 60 * 60 * 24);
+                insert("verify", new Object[]{"DEFAULT", discordId, random, new Timestamp(millis)});
+                return new Object[]{random};
         }
         return null;
     }
@@ -79,6 +98,13 @@ public class AccountConnection extends DatabaseConnection {
         long discordId = getLongInt(set, "discord_id");
         Timestamp expiry = getTimestamp(set, "expiry");
         return new Object[]{discordId, expiry};
+    };
+
+    private final SQLQuery GET_SERVER_VERIFICATION = set -> {
+        if(empty(set)) return null;
+        String username = getString(set, "username");
+        Timestamp expiry = getTimestamp(set, "expiry");
+        return new Object[] { username, expiry };
     };
 
     private final SQLQuery GET_DISCORD_IDS = set -> {

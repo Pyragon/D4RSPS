@@ -1,5 +1,6 @@
 package com.cryobot.commands.impl;
 
+import com.cryobot.Links;
 import com.cryobot.db.impl.AccountConnection;
 import com.cryobot.entities.Command;
 import net.dv8tion.jda.core.entities.Message;
@@ -13,7 +14,7 @@ public class LinkAccountCommand implements Command {
 
     @Override
     public String[] getAliases() {
-        return new String[]{"link", "unlink"};
+        return new String[]{"link", "unlink", "verify"};
     }
 
     @Override
@@ -29,6 +30,22 @@ public class LinkAccountCommand implements Command {
             AccountConnection.connection().handleRequest("unlink", discordId);
             message.delete().queue();
             message.getAuthor().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage("Success. Your discord account is no longer linked to your in-game account").queue());
+            return;
+        } else if(cmd[0].equals("verify")) {
+            String pMessage;
+            if(cmd.length != 2)
+                pMessage = "Incorrect usage. Please try again. .verify (random)";
+            else {
+                String random = cmd[1];
+                boolean linked = Links.linkDiscordAccountFromServer(discordId, random);
+                if (linked)
+                    pMessage = "Success! Your in-game account is now linked with your discord account.";
+                else
+                    pMessage = "Unsuccessful! Are you sure your accounts aren't already linked?";
+            }
+            message.delete().queue();
+            message.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage(pMessage).queue());
+            Links.recheckAllRoles();
             return;
         }
         Object[] data = AccountConnection.connection().handleRequest("get-username", discordId);
