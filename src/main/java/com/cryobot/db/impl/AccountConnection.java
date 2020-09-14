@@ -73,7 +73,7 @@ public class AccountConnection extends DatabaseConnection {
                 random = randomString(6);
                 delete("verify_server", "username=?", username);
                 long millis = System.currentTimeMillis() + (1000 * 60 * 60 * 24);
-                insert("verify", new Object[]{"DEFAULT", username, random, new Timestamp(millis)});
+                insert("verify_server", new Object[]{"DEFAULT", username, random, new Timestamp(millis)});
                 return new Object[]{random};
             case "add-verification":
                 discordId = (long) data[1];

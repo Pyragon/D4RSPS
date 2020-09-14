@@ -41,7 +41,7 @@ public class LinkAccountCommand implements Command {
                 if (linked)
                     pMessage = "Success! Your in-game account is now linked with your discord account.";
                 else
-                    pMessage = "Unsuccessful! Are you sure your accounts aren't already linked?";
+                    pMessage = "Unsuccessful! Please check your random string and try again.";
             }
             message.delete().queue();
             message.getAuthor().openPrivateChannel().queue(channel -> channel.sendMessage(pMessage).queue());
