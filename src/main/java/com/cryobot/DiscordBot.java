@@ -73,10 +73,8 @@ public class DiscordBot {
                     .setToken(properties.getProperty("token"))
                     .setEventManager(new AnnotatedEventManager())
                     .addEventListener(new EventListener())
-                    .buildBlocking();
+                    .buildAsync();
         } catch (LoginException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
