@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               10.1.25-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win32
--- HeidiSQL Version:             10.1.0.5464
+-- Server version:               10.3.15-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             10.3.0.5771
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -21,42 +21,46 @@ CREATE TABLE IF NOT EXISTS `friends_chats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner` varchar(50) NOT NULL,
   `discord_id` bigint(20) NOT NULL,
-  `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `added` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
 -- Dumping structure for table discord.guess_items
 CREATE TABLE IF NOT EXISTS `guess_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_name` varchar(50) NOT NULL,
   `item_pic_url` varchar(500) NOT NULL,
   `hint` varchar(500) NOT NULL,
-  `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `added` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
 -- Dumping structure for table discord.linked
 CREATE TABLE IF NOT EXISTS `linked` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `discord_id` bigint(20) NOT NULL,
-  `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `added` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
 -- Dumping structure for table discord.misc
 CREATE TABLE IF NOT EXISTS `misc` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `key` varchar(50) NOT NULL,
   `value` varchar(500) NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
 -- Dumping structure for table discord.places
 CREATE TABLE IF NOT EXISTS `places` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -65,11 +69,12 @@ CREATE TABLE IF NOT EXISTS `places` (
   `plane` int(11) NOT NULL,
   `hint` varchar(500) NOT NULL,
   `image` varchar(500) NOT NULL,
-  `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `added` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
 -- Dumping structure for table discord.points
 CREATE TABLE IF NOT EXISTS `points` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -80,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `points` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
 -- Dumping structure for table discord.roles
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -96,33 +102,47 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `give_to_points_leader` int(1) NOT NULL,
   `give_to_ingame_status` int(1) NOT NULL,
   `ingame_status` varchar(50) DEFAULT NULL,
-  `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `added` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
 -- Dumping structure for table discord.trivia
 CREATE TABLE IF NOT EXISTS `trivia` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question` varchar(100) NOT NULL,
   `answers` varchar(1000) NOT NULL,
   `correct` int(1) NOT NULL,
-  `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `added` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
 -- Dumping structure for table discord.verify
 CREATE TABLE IF NOT EXISTS `verify` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `discord_id` bigint(20) NOT NULL,
   `random` varchar(500) NOT NULL,
-  `expiry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `expiry` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+
+-- Dumping structure for table discord.verify_server
+CREATE TABLE IF NOT EXISTS `verify_server` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(12) NOT NULL,
+  `random` varchar(20) NOT NULL,
+  `expiry` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
