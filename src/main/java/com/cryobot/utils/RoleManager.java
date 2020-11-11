@@ -6,12 +6,12 @@ import com.cryobot.db.impl.GamesConnection;
 import com.cryobot.db.impl.MiscConnection;
 import com.cryobot.db.impl.RolesConnection;
 import com.cryobot.entities.Role;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.requests.restaction.RoleAction;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.requests.restaction.RoleAction;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.awt.*;
@@ -53,10 +53,10 @@ public class RoleManager {
             });
         }
         Guild guild = DiscordBot.getInstance().getJda().getGuildById(guildId);
-        RoleAction action = guild.getController().createRole();
+        RoleAction action = guild.createRole();
         if (role.isUsingColour())
             action.setColor(Color.decode(role.getRoleColour()));
-        net.dv8tion.jda.core.entities.Role newRole = action.setName(role.getName())
+        net.dv8tion.jda.api.entities.Role newRole = action.setName(role.getName())
                 .setMentionable(role.isMentionableByAnyone())
                 .setHoisted(role.isDisplaySeparately())
                 .complete();
@@ -70,7 +70,7 @@ public class RoleManager {
         long guildId = MiscConnection.getLong("guild-id");
         if (guildId == 0L) return;
         Guild guild = DiscordBot.getInstance().getJda().getGuildById(guildId);
-        net.dv8tion.jda.core.entities.Role existing = guild.getRoleById(role.getRoleId());
+        net.dv8tion.jda.api.entities.Role existing = guild.getRoleById(role.getRoleId());
         existing.getManager().setHoisted(role.isDisplaySeparately()).queue();
         existing.getManager().setMentionable(role.isMentionableByAnyone()).queue();
         if(role.isUsingColour())
@@ -128,12 +128,12 @@ public class RoleManager {
 
     public void checkPointsLeader(Role role, int points) {
         Guild guild = DiscordBot.getInstance().getJda().getGuildById(MiscConnection.getLong("guild-id"));
-        net.dv8tion.jda.core.entities.Role r = guild.getRoleById(role.getRoleId());
+        net.dv8tion.jda.api.entities.Role r = guild.getRoleById(role.getRoleId());
         List<Member> list = guild.getMembersWithRoles(r);
         list.forEach(m -> {
             int memberPoints = GamesConnection.getPoints(m.getUser().getIdLong());
             if (memberPoints < points)
-                guild.getController().removeRolesFromMember(m, r);
+                guild.removeRoleFromMember(m, r);
         });
     }
 
@@ -147,7 +147,7 @@ public class RoleManager {
     }
 
     public void deleteRole(Role role) {
-        net.dv8tion.jda.core.entities.Role r = DiscordBot.getInstance().getJda().getGuildById(MiscConnection.getLong("guild-id")).getRoleById(role.getRoleId());
+        net.dv8tion.jda.api.entities.Role r = DiscordBot.getInstance().getJda().getGuildById(MiscConnection.getLong("guild-id")).getRoleById(role.getRoleId());
         if (r != null) r.delete().queue();
     }
 
@@ -163,11 +163,11 @@ public class RoleManager {
         long guildId = MiscConnection.getLong("guild-id");
         if (guildId == 0L) return;
         Guild guild = DiscordBot.getInstance().getJda().getGuildById(guildId);
-        net.dv8tion.jda.core.entities.Role r = guild.getRoleById(role.getRoleId());
+        net.dv8tion.jda.api.entities.Role r = guild.getRoleById(role.getRoleId());
         if (r == null) return;
         Member member = guild.getMember(user);
         if (member == null) return;
-        guild.getController().addRolesToMember(member, r).queue();
+        guild.addRoleToMember(member, r).queue();
         //Notes - /If the role you're trying to assign is higher in roles list than DiscordHelper,
         // you will receive an error as the bot cannot modify a role higher than it's own
 
@@ -177,11 +177,11 @@ public class RoleManager {
         long guildId = MiscConnection.getLong("guild-id");
         if (guildId == 0L) return;
         Guild guild = DiscordBot.getInstance().getJda().getGuildById(guildId);
-        net.dv8tion.jda.core.entities.Role r = guild.getRoleById(role.getRoleId());
+        net.dv8tion.jda.api.entities.Role r = guild.getRoleById(role.getRoleId());
         if (r == null) return;
         Member member = guild.getMember(user);
         if (member == null) return;
-        guild.getController().removeRolesFromMember(member, r).queue();
+        guild.removeRoleFromMember(member, r).queue();
     }
 
     public boolean roleNameExists(String name) {
@@ -189,7 +189,7 @@ public class RoleManager {
         return guild.getRolesByName(name, true).size() > 0;
     }
 
-    public net.dv8tion.jda.core.entities.Role getRole(String name) {
+    public net.dv8tion.jda.api.entities.Role getRole(String name) {
         if(!roleNameExists(name)) return null;
         Guild guild = DiscordBot.getInstance().getJda().getGuildById(MiscConnection.getLong("guild-id"));
         return guild.getRolesByName(name, true).get(0);

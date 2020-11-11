@@ -1,6 +1,6 @@
 package com.cryobot.entities;
 
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 public interface Command {
 

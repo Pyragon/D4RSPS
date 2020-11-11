@@ -4,9 +4,10 @@ import com.cryobot.DiscordBot;
 import com.cryobot.Links;
 import com.cryobot.db.impl.GamesConnection;
 import com.cryobot.entities.Command;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.util.HashMap;
 
@@ -72,7 +73,7 @@ public class DeveloperCommands implements Command {
             case "change-status":
                 String status = message.getContentRaw().substring(message.getContentRaw().indexOf(" ")+1);
                 message.delete().queue();
-                DiscordBot.getInstance().getJda().getPresence().setGame(Game.playing(status));
+                DiscordBot.getInstance().getJda().getPresence().setPresence(OnlineStatus.ONLINE, Activity.of(Activity.ActivityType.DEFAULT, status));
                 break;
         }
     }

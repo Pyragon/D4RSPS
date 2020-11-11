@@ -2,7 +2,7 @@ package com.cryobot.commands.impl;
 
 import com.cryobot.Links;
 import com.cryobot.entities.Command;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 public class FinishLinkCommand implements Command {
 

@@ -6,9 +6,9 @@ import com.cryobot.entities.Dialogue;
 import com.cryobot.entities.Place;
 import com.cryobot.games.impl.GuessThatPlaceGame;
 import com.cryobot.utils.Utilities;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.PrivateChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 public class GuessThatPlaceDialogue extends Dialogue {
 
@@ -89,7 +89,7 @@ public class GuessThatPlaceDialogue extends Dialogue {
                 message.delete().queue();
                 if (GuessThatPlaceGame.hasPage(newPage)) return;
                 page = newPage;
-                Message m = channel.getMessageById(messageId).complete();
+                Message m = channel.retrieveMessageById(messageId).complete();
                 if (m == null) return;
                 m.editMessage(GuessThatPlaceGame.buildPlacesList(page)).queue();
                 return;

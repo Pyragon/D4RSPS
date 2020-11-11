@@ -2,9 +2,9 @@ package com.cryobot.entities;
 
 import com.cryobot.DiscordBot;
 import lombok.Data;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 
 @Data
 public abstract class Dialogue {

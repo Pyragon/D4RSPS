@@ -5,9 +5,9 @@ import com.cryobot.db.impl.GamesConnection;
 import com.cryobot.db.impl.MiscConnection;
 import com.cryobot.entities.Game;
 import com.cryobot.entities.Item;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +49,7 @@ public class GuessThatItemGame extends Game {
             long channelId = MiscConnection.getLong("guess-that-item-channel");
             if (channelId == 0L) return;
             long guildId = MiscConnection.getLong("guild-id");
-            Message message = DiscordBot.getInstance().getJda().getGuildById(guildId).getTextChannelById(channelId).getMessageById(messageId).complete();
+            Message message = DiscordBot.getInstance().getJda().getGuildById(guildId).getTextChannelById(channelId).retrieveMessageById(messageId).complete();
             if (message == null) return;
             String winner = params.length > 0 ? params[0] : null;
             message.editMessage(buildWinningMessage(winner)).queue();

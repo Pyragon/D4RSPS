@@ -6,8 +6,8 @@ import com.cryobot.db.impl.MiscConnection;
 import com.cryobot.entities.Dialogue;
 import com.cryobot.entities.Trivia;
 import com.cryobot.games.impl.TriviaGame;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 
 public class TriviaDialogue extends Dialogue {
 
@@ -83,7 +83,7 @@ public class TriviaDialogue extends Dialogue {
                 message.delete().queue();
                 if (TriviaGame.hasPage(page + newPage)) return;
                 page += newPage;
-                Message m = channel.getMessageById(messageId).complete();
+                Message m = channel.retrieveMessageById(messageId).complete();
                 if (m == null) return;
                 m.editMessage(TriviaGame.buildTriviaList(page)).queue();
                 return;

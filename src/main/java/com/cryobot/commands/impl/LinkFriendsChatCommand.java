@@ -4,7 +4,7 @@ import com.cryobot.Links;
 import com.cryobot.db.impl.FriendsChatConnection;
 import com.cryobot.entities.Command;
 import com.mysql.jdbc.StringUtils;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 public class LinkFriendsChatCommand implements Command {
 

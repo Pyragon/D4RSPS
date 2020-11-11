@@ -6,7 +6,7 @@ import com.cryobot.db.impl.AccountConnection;
 import com.cryobot.entities.Command;
 import com.cryobot.entities.Game;
 import com.cryobot.utils.Utilities;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.io.IOException;
 import java.util.ArrayList;

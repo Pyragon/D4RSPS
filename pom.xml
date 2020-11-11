@@ -6,7 +6,7 @@
 
     <groupId>com.cryogen</groupId>
     <artifactId>discordbot</artifactId>
-    <version>1.0.13</version>
+    <version>1.0.14</version>
     <build>
         <plugins>
             <plugin>
@@ -32,7 +32,7 @@
         <repository>
             <id>jcenter</id>
             <name>jcenter-bintray</name>
-            <url>http://jcenter.bintray.com</url>
+            <url>https://jcenter.bintray.com</url>
         </repository>
     </repositories>
 
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>3.5.0_329</version>
+            <version>4.2.0_214</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

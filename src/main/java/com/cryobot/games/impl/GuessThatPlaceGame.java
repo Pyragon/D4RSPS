@@ -5,10 +5,10 @@ import com.cryobot.db.impl.GamesConnection;
 import com.cryobot.db.impl.MiscConnection;
 import com.cryobot.entities.Game;
 import com.cryobot.entities.Place;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,7 +79,7 @@ public class GuessThatPlaceGame extends Game {
                     .getJda()
                     .getGuildById(guildId)
                     .getTextChannelById(channelId)
-                    .getMessageById(messageId)
+                    .retrieveMessageById(messageId)
                     .complete();
             if (message == null) return;
             String winner = params.length > 0 ? params[0] : null;

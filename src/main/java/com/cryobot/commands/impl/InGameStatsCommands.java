@@ -5,8 +5,8 @@ import com.cryobot.db.impl.MiscConnection;
 import com.cryobot.entities.Command;
 import com.cryobot.utils.Utilities;
 import com.mysql.jdbc.StringUtils;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.text.DecimalFormat;
 import java.util.Optional;

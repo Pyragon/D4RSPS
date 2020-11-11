@@ -14,11 +14,10 @@ import com.google.gson.GsonBuilder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.hooks.AnnotatedEventManager;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
 
 import javax.security.auth.login.LoginException;
 import java.io.*;
@@ -69,12 +68,13 @@ public class DiscordBot {
         roleManager.load();
         loadNewsChannels();
         try {
-            jda = new JDABuilder(AccountType.BOT)
-                    .setToken(properties.getProperty("token"))
+            jda = JDABuilder
+                    .createDefault(properties.getProperty("token"))
                     .setEventManager(new AnnotatedEventManager())
-                    .addEventListener(new EventListener())
-                    .buildAsync();
-        } catch (LoginException e) {
+                    .addEventListeners(new EventListener())
+                    .build();
+            jda.awaitReady();
+        } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }
     }

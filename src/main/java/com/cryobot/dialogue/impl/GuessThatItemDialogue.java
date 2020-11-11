@@ -7,8 +7,8 @@ import com.cryobot.entities.Item;
 import com.cryobot.games.impl.GuessThatItemGame;
 import com.cryobot.utils.Utilities;
 import com.mysql.jdbc.StringUtils;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 
 public class GuessThatItemDialogue extends Dialogue {
 

@@ -6,8 +6,8 @@ import com.cryobot.entities.Dialogue;
 import com.cryobot.entities.Role;
 import com.cryobot.utils.HexValidator;
 import com.mysql.jdbc.StringUtils;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -463,7 +463,7 @@ public class SetupDialogue extends Dialogue {
         } else if (stage == 30) {
             response = response.toLowerCase();
             if (response.equals("y") || response.equals("yes")) {
-                net.dv8tion.jda.core.entities.Role role = DiscordBot.getInstance().getRoleManager().getRole(roleName);
+                net.dv8tion.jda.api.entities.Role role = DiscordBot.getInstance().getRoleManager().getRole(roleName);
                 if(role == null) {
                     sendMessage("Error. Please try entering another name.");
                     stage = 5;

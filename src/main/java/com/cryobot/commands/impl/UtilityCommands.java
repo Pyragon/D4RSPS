@@ -4,9 +4,9 @@ import com.cryobot.DiscordBot;
 import com.cryobot.db.impl.AccountConnection;
 import com.cryobot.entities.Command;
 import com.cryobot.entities.Game;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -46,7 +46,7 @@ public class UtilityCommands implements Command {
                     while (true) {
                         List<Message> messages = channel.getHistory().retrievePast(50).complete();
                         OffsetDateTime twoWeeksAgo = OffsetDateTime.now().minus(2, ChronoUnit.WEEKS);
-                        messages.removeIf(m -> m.getCreationTime().isBefore(twoWeeksAgo));
+                        messages.removeIf(m -> m.getTimeCreated().isBefore(twoWeeksAgo));
                         if (messages.isEmpty() || messages.size() < 2) break;
                         channel.deleteMessages(messages).complete();
                     }

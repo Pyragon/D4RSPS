@@ -11,8 +11,8 @@ import com.cryobot.entities.Trivia;
 import com.cryobot.games.impl.GuessThatItemGame;
 import com.cryobot.games.impl.GuessThatPlaceGame;
 import com.cryobot.utils.Utilities;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
