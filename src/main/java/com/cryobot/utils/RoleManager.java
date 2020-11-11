@@ -74,7 +74,7 @@ public class RoleManager {
         existing.getManager().setHoisted(role.isDisplaySeparately()).queue();
         existing.getManager().setMentionable(role.isMentionableByAnyone()).queue();
         if(role.isUsingColour())
-            existing.getManager().setColor(Color.decode(role.getRoleColour()));
+            existing.getManager().setColor(Color.decode(role.getRoleColour())).queue();
         roles.put(role.getRoleId(), role);
         RolesConnection.connection().handleRequest("remove-role", role.getId());
         RolesConnection.connection().handleRequest("add-role", role);
